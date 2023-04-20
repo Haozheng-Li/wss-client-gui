@@ -17,7 +17,7 @@ from PySide6.QtSvgWidgets import QSvgWidget
 
 from wss.gui.utils import set_resource
 from wss.gui.widget.title_bar.title_bar_button import PyTitleButton
-from wss.gui.widget.title_bar.title_bar_div import PyDiv
+from wss.gui.widget.div import VerticalDiv
 
 from PySide6.QtCore import QSize, Signal, Qt
 from PySide6.QtGui import QCursor
@@ -249,9 +249,9 @@ class PyTitleBar(QWidget):
 		self.bg_layout.setSpacing(0)
 
 		# DIVS
-		self.div_1 = PyDiv(self._div_color)
-		self.div_2 = PyDiv(self._div_color)
-		self.div_3 = PyDiv(self._div_color)
+		self.div_1 = VerticalDiv(self._div_color)
+		self.div_2 = VerticalDiv(self._div_color)
+		self.div_3 = VerticalDiv(self._div_color)
 
 		# LEFT FRAME WITH MOVE APP
 		self.top_logo = QLabel()

@@ -199,7 +199,7 @@ class UIMainWindow(object):
 		self.right_page_layout.addWidget(self.right_app_page_container)
 
 	def setup_right_app_page(self, page_obj):
-		self.left_app_page_container.addWidget(page_obj)
+		self.right_app_page_container.addWidget(page_obj)
 
 	def setup_footer(self):
 		self.footer_frame = QFrame()

@@ -14,14 +14,13 @@
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
 
 from wss.gui.utils import set_resource
-from wss.gui.widget.div import PyDiv
+from wss.gui.widget.div import HorizontalDiv
 from wss.gui.widget.sidebar.sidebar_button import PyLeftMenuButton
 from PySide6.QtCore import QPropertyAnimation, QEasingCurve, Qt, Signal
 from PySide6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QFrame
 
 
 class PyLeftMenu(QWidget):
-	# SIGNALS
 	clicked = Signal(object)
 	released = Signal(object)
 
@@ -101,7 +100,7 @@ class PyLeftMenu(QWidget):
 			icon_path=icon_path
 		)
 		self.toggle_button.clicked.connect(self.toggle_animation)
-		self.div_top = PyDiv(dark_four)
+		self.div_top = HorizontalDiv(dark_four)
 
 		# ADD TO TOP LAYOUT
 		# ///////////////////////////////////////////////////////////////
@@ -110,7 +109,7 @@ class PyLeftMenu(QWidget):
 
 		# ADD TO BOTTOM LAYOUT
 		# ///////////////////////////////////////////////////////////////
-		self.div_bottom = PyDiv(dark_four)
+		self.div_bottom = HorizontalDiv(dark_four)
 		self.div_bottom.hide()
 		self.bottom_layout.addWidget(self.div_bottom)
 

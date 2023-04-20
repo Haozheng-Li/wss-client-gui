@@ -12,3 +12,6 @@
 #     https://opensource.org/licenses/MIT
 #
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
+
+
+from wss.gui.apps.dashboard import views

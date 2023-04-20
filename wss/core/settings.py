@@ -32,6 +32,11 @@ USE_GUI = True
 
 DEBUG = True
 
+INSTALLED_APPS = [
+	'dashboard',
+	'accessories',
+]
+
 # Application definition
 APP_NAME = "WSS-Client"
 

@@ -13,18 +13,6 @@
 #
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
 
-from PySide6.QtWidgets import QHBoxLayout, QWidget, QFrame
 
-
-class PyDiv(QWidget):
-    def __init__(self, color):
-        super().__init__()
-
-        self.layout = QHBoxLayout(self)
-        self.layout.setContentsMargins(5,0,5,0)
-        self.frame_line = QFrame()
-        self.frame_line.setStyleSheet(f"background: {color};")
-        self.frame_line.setMaximumHeight(1)
-        self.frame_line.setMinimumHeight(1)
-        self.layout.addWidget(self.frame_line)
-        self.setMaximumHeight(1)
+from wss.gui.widget.div.horizontal_div import HorizontalDiv
+from wss.gui.widget.div.vertical_div import VerticalDiv
