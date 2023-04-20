@@ -24,9 +24,10 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFrame, QStacke
 
 class UIMainWindow(object):
 	def __init__(self):
+		self.right_app_page_container = None
 		self.layout_wrapper_layout = None
 		self.left_page_frame_layout = None
-		self.app_page_container = None
+		self.left_app_page_container = None
 		self.right_page_content = None
 		self.right_page_layout = None
 		self.title_bar = None
@@ -51,7 +52,7 @@ class UIMainWindow(object):
 		self.sidebar_frame = None
 		self.layout_wrapper = None
 		self.central_widget_layout = None
-		self.app_pages = []
+		self.left_app_pages = []
 		
 		self.parent = None
 
@@ -65,8 +66,9 @@ class UIMainWindow(object):
 		self.setup_titlebar()
 		self.setup_main_content()
 		self.setup_left_page()
-		self.setup_app_page_container()
+		self.setup_left_app_page_container()
 		self.setup_right_page()
+		self.setup_right_app_page_container()
 		self.setup_footer()
 
 		self.parent.setCentralWidget(self.central_widget)
@@ -164,35 +166,40 @@ class UIMainWindow(object):
 		self.left_page_frame_layout.setContentsMargins(5, 5, 5, 5)
 		self.main_content_layout.addWidget(self.left_page_frame)
 
-	def setup_app_page_container(self):
-		self.app_page_container = QStackedWidget(self.left_page_frame)
-		self.app_page_container.setObjectName(u"app_page_container")
-		self.left_page_frame_layout.addWidget(self.app_page_container)
+	def setup_left_app_page_container(self):
+		self.left_app_page_container = QStackedWidget(self.left_page_frame)
+		self.left_app_page_container.setObjectName(u"left_app_page_container")
+		self.left_page_frame_layout.addWidget(self.left_app_page_container)
 
-	def setup_app_page(self, page_obj):
-		self.app_page_container.addWidget(page_obj)
+	def setup_left_app_page(self, page_obj):
+		self.left_app_page_container.addWidget(page_obj)
 
 	def setup_right_page(self):
 		self.right_page_frame = QFrame()
+		self.right_page_frame.setObjectName("right_page_frame")
 		self.right_page_frame.setMinimumWidth(settings.APP_RIGHT_COLUMN_SIZE['maximum'])
 		self.right_page_frame.setMaximumWidth(settings.APP_RIGHT_COLUMN_SIZE['maximum'])
 
-		self.right_page_layout = QVBoxLayout(self.right_page_frame)
-		self.right_page_layout.setContentsMargins(5, 5, 5, 5)
-		self.right_page_layout.setSpacing(0)
-
-		self.right_page_bg_frame = QFrame()
-		self.right_page_bg_frame.setObjectName("right_page_bg_frame")
-		self.right_page_bg_frame.setStyleSheet(f'''
-		#right_page_bg_frame {{
+		self.right_page_frame.setStyleSheet(f'''
+		#right_page_frame {{
 		    border-radius: 8px;
 		    background-color: {theme.BG_TWO};
 		}}
 		''')
 
-		self.right_page_layout.addWidget(self.right_page_bg_frame)
+		self.right_page_layout = QVBoxLayout(self.right_page_frame)
+		self.right_page_layout.setContentsMargins(5, 5, 5, 5)
+		self.right_page_layout.setSpacing(0)
 
 		self.main_content_layout.addWidget(self.right_page_frame)
+
+	def setup_right_app_page_container(self):
+		self.right_app_page_container = QStackedWidget(self.right_page_frame)
+		self.right_app_page_container.setObjectName(u"left_app_page_container")
+		self.right_page_layout.addWidget(self.right_app_page_container)
+
+	def setup_right_app_page(self, page_obj):
+		self.left_app_page_container.addWidget(page_obj)
 
 	def setup_footer(self):
 		self.footer_frame = QFrame()

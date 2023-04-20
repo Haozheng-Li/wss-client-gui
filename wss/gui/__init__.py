@@ -32,46 +32,6 @@ class WSSMainWindow(QMainWindow):
 			"is_active" : True
 		},
 		{
-			"btn_icon" : "icon_widgets.svg",
-			"btn_id" : "btn_widgets",
-			"btn_text" : "Show Custom Widgets",
-			"btn_tooltip" : "Show custom widgets",
-			"show_top" : True,
-			"is_active" : False
-		},
-		{
-			"btn_icon" : "icon_add_user.svg",
-			"btn_id" : "btn_add_user",
-			"btn_text" : "Add Users",
-			"btn_tooltip" : "Add users",
-			"show_top" : True,
-			"is_active" : False
-		},
-		{
-			"btn_icon" : "icon_file.svg",
-			"btn_id" : "btn_new_file",
-			"btn_text" : "New File",
-			"btn_tooltip" : "Create new file",
-			"show_top" : True,
-			"is_active" : False
-		},
-		{
-			"btn_icon" : "icon_folder_open.svg",
-			"btn_id" : "btn_open_file",
-			"btn_text" : "Open File",
-			"btn_tooltip" : "Open file",
-			"show_top" : True,
-			"is_active" : False
-		},
-		{
-			"btn_icon" : "icon_save.svg",
-			"btn_id" : "btn_save",
-			"btn_text" : "Save File",
-			"btn_tooltip" : "Save file",
-			"show_top" : True,
-			"is_active" : False
-		},
-		{
 			"btn_icon" : "icon_info.svg",
 			"btn_id" : "btn_info",
 			"btn_text" : "Information",
