@@ -93,8 +93,8 @@ class WSSMainWindow(QMainWindow):
 			self.setAttribute(Qt.WA_TranslucentBackground)
 
 	def setup_apps(self):
-		self.accessories_page = dashboard.views.UiAccessories()
-		self.accessories_page.setup_ui(self)
+		self.accessories_page = dashboard.views.AccessoriesView()
+		self.accessories_page.setup_ui()
 		self.ui.setup_right_app_page(self.accessories_page)
 
 	def init_sidebar(self):
