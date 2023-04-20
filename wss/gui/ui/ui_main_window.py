@@ -15,17 +15,18 @@
 
 from wss.core import settings
 from wss.gui.style import theme
-from wss.gui.ui.ui_right_column import Ui_RightColumn
 from wss.gui.widget.sidebar import PyLeftMenu
 from wss.gui.widget.title_bar import PyTitleBar
 
 from wss.gui.widget.footer import Footer
 from wss.gui.widget.container import LayoutWrapper
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFrame
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFrame, QStackedWidget, QLabel
 
 
 class UIMainWindow(object):
 	def __init__(self):
+		self.left_page_frame_layout = None
+		self.app_page_container = None
 		self.right_page_content = None
 		self.right_page_layout = None
 		self.title_bar = None
@@ -50,6 +51,7 @@ class UIMainWindow(object):
 		self.sidebar_frame = None
 		self.layout_wrapper = None
 		self.central_widget_layout = None
+		self.app_pages = []
 		
 		self.parent = None
 
@@ -63,6 +65,7 @@ class UIMainWindow(object):
 		self.setup_titlebar()
 		self.setup_main_content()
 		self.setup_left_page()
+		self.setup_app_page_container()
 		self.setup_right_page()
 		self.setup_footer()
 
@@ -141,12 +144,24 @@ class UIMainWindow(object):
 	
 	def setup_left_page(self):
 		self.left_page_frame = QFrame()
+		self.left_page_frame_layout = QVBoxLayout(self.left_page_frame)
+		self.left_page_frame_layout.setSpacing(0)
+		self.left_page_frame_layout.setObjectName(u"left_page_frame_layout")
+		self.left_page_frame_layout.setContentsMargins(5, 5, 5, 5)
 		self.main_content_layout.addWidget(self.left_page_frame)
+
+	def setup_app_page_container(self):
+		self.app_page_container = QStackedWidget(self.left_page_frame)
+		self.app_page_container.setObjectName(u"app_page_container")
+		self.left_page_frame_layout.addWidget(self.app_page_container)
+
+	def setup_app_page(self, page_obj):
+		self.app_page_container.addWidget(page_obj)
 
 	def setup_right_page(self):
 		self.right_page_frame = QFrame()
-		self.right_page_frame.setMinimumWidth(240)
-		self.right_page_frame.setMaximumWidth(240)
+		self.right_page_frame.setMinimumWidth(settings.APP_RIGHT_COLUMN_SIZE['maximum'])
+		self.right_page_frame.setMaximumWidth(settings.APP_RIGHT_COLUMN_SIZE['maximum'])
 
 		self.right_page_layout = QVBoxLayout(self.right_page_frame)
 		self.right_page_layout.setContentsMargins(5, 5, 5, 5)
@@ -162,9 +177,6 @@ class UIMainWindow(object):
 		''')
 
 		self.right_page_layout.addWidget(self.right_page_bg_frame)
-
-		self.right_page_content = Ui_RightColumn()
-		self.right_page_content.setupUi(self.right_page_bg_frame)
 
 		self.main_content_layout.addWidget(self.right_page_frame)
 
