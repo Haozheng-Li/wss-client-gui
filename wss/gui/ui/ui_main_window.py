@@ -19,12 +19,12 @@ from wss.gui.widget.sidebar import PyLeftMenu
 from wss.gui.widget.title_bar import PyTitleBar
 
 from wss.gui.widget.footer import Footer
-from wss.gui.widget.container import LayoutWrapper
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFrame, QStackedWidget, QLabel
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFrame, QStackedWidget
 
 
 class UIMainWindow(object):
 	def __init__(self):
+		self.layout_wrapper_layout = None
 		self.left_page_frame_layout = None
 		self.app_page_container = None
 		self.right_page_content = None
@@ -84,22 +84,36 @@ class UIMainWindow(object):
 		self.central_widget_layout.setContentsMargins(0, 0, 0, 0)
 
 	def setup_layout_wrapper(self):
-		self.layout_wrapper = LayoutWrapper(
-			self.parent,
-			bg_color=theme.BG_ONE,
-			border_color=theme.BG_TWO,
-			text_color=theme.TEXT_FOREGROUND
-		)
-		self.layout_wrapper.set_stylesheet(border_radius=0, border_size=0)
+		self.layout_wrapper = QFrame()
+		self.layout_wrapper.setObjectName("layout_wrapper")
+
+		self.layout_wrapper_layout = QHBoxLayout(self.layout_wrapper)
+		self.layout_wrapper_layout.setContentsMargins(0, 0, 0, 0)
+		self.layout_wrapper_layout.setSpacing(2)
+		
+		layout_wrapper_style = f"""
+			#layout_wrapper {{
+			    background-color: {theme.BG_ONE};
+			    border-radius: 0;
+			    border: 0px solid {theme.BG_TWO};
+			}}
+			QFrame {{ 
+			    color: {theme.TEXT_FOREGROUND};
+			    font: {settings.APP_FONT['text_size']}pt '{settings.APP_FONT['family']}';
+			}}
+		"""
+		self.layout_wrapper.setStyleSheet(layout_wrapper_style)
+
 		self.central_widget_layout.addWidget(self.layout_wrapper)
 	
 	def setup_sidebar(self):
 		sidebar_margin = settings.APP_SIDEBAR_MARGINS
 		sidebar_minimum_width = settings.APP_SIDEBAR_WIDTH["minimum"]
+		sidebar_maximum_width = settings.APP_SIDEBAR_WIDTH["maximum"]
 
 		self.sidebar_frame = QFrame()
-		self.sidebar_frame.setMaximumSize(sidebar_minimum_width + (sidebar_margin * 2), 17280)
-		self.sidebar_frame.setMinimumSize(sidebar_minimum_width + (sidebar_margin * 2), 0)
+		self.sidebar_frame.setMaximumSize(sidebar_maximum_width + (sidebar_margin * 2), 17280)
+		self.sidebar_frame.setMinimumSize(sidebar_maximum_width + (sidebar_margin * 2), 0)
 
 		self.sidebar_layout = QHBoxLayout(self.sidebar_frame)
 		self.sidebar_layout.setContentsMargins(
@@ -125,13 +139,13 @@ class UIMainWindow(object):
 			text_active=theme.TEXT_ACTIVE
 		)
 		self.sidebar_layout.addWidget(self.sidebar)
-		self.layout_wrapper.layout.addWidget(self.sidebar_frame)
+		self.layout_wrapper_layout.addWidget(self.sidebar_frame)
 	
 	def setup_container(self):
 		self.container = QFrame()
 		self.container_layout = QVBoxLayout(self.container)
 		self.container_layout.setContentsMargins(3, 3, 3, 3)
-		self.layout_wrapper.layout.addWidget(self.container)
+		self.layout_wrapper_layout.addWidget(self.container)
 	
 	def setup_main_content(self):
 		self.main_content_frame = QFrame()
@@ -208,7 +222,6 @@ class UIMainWindow(object):
 		self.title_bar_layout = QVBoxLayout(self.title_bar_frame)
 		self.title_bar_layout.setContentsMargins(0, 0, 0, 0)
 
-		# ADD CUSTOM TITLE BAR TO LAYOUT
 		self.title_bar = PyTitleBar(
 			self.parent,
 			logo_width=100,

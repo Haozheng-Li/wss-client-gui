@@ -12,10 +12,3 @@
 #     https://opensource.org/licenses/MIT
 #
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
-
-
-class AppConfig:
-	def __init__(self, app_name, app_module):
-		self.name = app_name
-
-
