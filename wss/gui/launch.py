@@ -67,6 +67,7 @@ class WSSMainWindow(QMainWindow):
 
 	def __init__(self):
 		super().__init__()
+		self.cameras_page = None
 		self.accessories_page = None
 		self.ui = None
 		self.setObjectName("WSSMainWindow")
@@ -96,10 +97,14 @@ class WSSMainWindow(QMainWindow):
 		self.accessories_page = dashboard.views.AccessoriesView()
 		self.accessories_page.setup_ui()
 		self.ui.setup_right_app_page(self.accessories_page)
+		
+		self.cameras_page = dashboard.views.CamerasView()
+		self.cameras_page.setup_ui()
+		self.ui.setup_left_app_page(self.cameras_page)
 
 	def init_sidebar(self):
 		self.ui.sidebar.add_menus(self.add_left_menus)
 
 	def init_title_bar(self):
 		self.ui.title_bar.add_menus(self.add_title_bar_menus)
-		self.ui.title_bar.set_title("Welcome to PyOneDark")
+		self.ui.title_bar.set_title("Welcome to WSS")

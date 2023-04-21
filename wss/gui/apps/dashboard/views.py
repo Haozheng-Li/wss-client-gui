@@ -12,14 +12,62 @@
 #     https://opensource.org/licenses/MIT
 #
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
-from PySide6.QtCore import QRect, QSize
-from PySide6.QtGui import QPixmap
+
+from PySide6.QtCore import QSize
+from PySide6.QtGui import QPixmap, QImage
 
 from wss.core import settings
 from wss.gui.style import theme
 from wss.gui.widget.div import HorizontalDiv
 
 from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget, QListWidget, QCheckBox, QListWidgetItem, QHBoxLayout, QFrame
+
+
+class CamerasView(QWidget):
+	def __init__(self):
+		super(CamerasView, self).__init__()
+		self.camera_frame = None
+		self.content_layout = None
+		self.content = None
+		self.layout = None
+		self.title_div = None
+		self.title = None
+
+	def setup_title(self):
+		self.title = QLabel()
+		self.title.setText('Cameras')
+		self.title.setMaximumHeight(20)
+		self.title.setStyleSheet(f"font: 12pt '{settings.APP_FONT['family']}'")
+		self.layout.addWidget(self.title)
+
+		self.title_div = HorizontalDiv(theme.DARK_FOUR)
+		self.layout.addWidget(self.title_div)
+
+	def setup_ui(self):
+		self.setObjectName('cameras')
+
+		self.layout = QVBoxLayout(self)
+		self.layout.setSpacing(15)
+		self.layout.setObjectName(u"layout")
+		self.layout.setContentsMargins(12, 12, 12, 12)
+
+		self.setup_title()
+
+		self.content = QFrame()
+		self.content_layout = QHBoxLayout(self.content)
+
+		self.camera_frame = QLabel()
+		self.content_layout.addWidget(self.camera_frame)
+
+		self.layout.addWidget(self.content)
+
+	def show_camera_frame(self):
+		flag, self.image = self.cap.read()  # 从视频流中读取
+
+		show = cv2.resize(self.image, (640, 480))
+		show = cv2.cvtColor(show, cv2.COLOR_BGR2RGB)
+		showImage = QImage(show.data, show.shape[1], show.shape[0], QImage.Format_RGB888)
+		self.camera_frame.setPixmap(QPixmap.fromImage(showImage))
 
 
 class AccessoriesView(QWidget):
@@ -36,6 +84,7 @@ class AccessoriesView(QWidget):
 		self.title = QLabel()
 		self.title.setText('Accessories')
 		self.title.setStyleSheet(f"font: 12pt '{settings.APP_FONT['family']}'")
+		self.title.setMaximumHeight(20)
 		self.layout.addWidget(self.title)
 
 		self.title_div = HorizontalDiv(theme.DARK_FOUR)
@@ -54,7 +103,6 @@ class AccessoriesView(QWidget):
 		self.accessories_container = QListWidget(self)
 		self.accessories_container.setStyleSheet(f"background-color: {theme.BG_TWO}; border-radius: 8px;")
 		self.accessories_container.setObjectName(u"accessories_container")
-		print(self.accessories_container.size())
 
 		self.layout.addWidget(self.accessories_container)
 
@@ -116,13 +164,7 @@ class AccessoryBox(QWidget):
 		self.verticalLayout.setObjectName(u"verticalLayout")
 		self.label = QLabel(self.frame)
 		self.label.setText("USB Camera 1")
-		# self.label.setStyleSheet("""
-		#         background-color: #1b1e23;
-		#         color: #8a95aa;
-		#         padding-left: 10px;
-		#         padding-right: 10px;
-		#         border-radius: 17px;
-        # """)
+
 		self.label.setObjectName(u"label")
 
 		self.verticalLayout.addWidget(self.label)

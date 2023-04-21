@@ -153,13 +153,20 @@ class UIMainWindow(object):
 		self.main_content_frame = QFrame()
 
 		self.main_content_layout = QHBoxLayout(self.main_content_frame)
-		self.main_content_layout.setContentsMargins(0, 0, 0, 0)
-		self.main_content_layout.setSpacing(0)
+		self.main_content_layout.setContentsMargins(0, 0, 5, 5)
+		self.main_content_layout.setSpacing(10)
 		
 		self.container_layout.addWidget(self.main_content_frame)
 	
 	def setup_left_page(self):
 		self.left_page_frame = QFrame()
+		self.left_page_frame.setObjectName("left_page_frame")
+		self.left_page_frame.setStyleSheet(f'''
+		#left_page_frame {{
+		    border-radius: 8px;
+		    background-color: {theme.BG_TWO};
+		}}
+		''')
 		self.left_page_frame_layout = QVBoxLayout(self.left_page_frame)
 		self.left_page_frame_layout.setSpacing(0)
 		self.left_page_frame_layout.setObjectName(u"left_page_frame_layout")
