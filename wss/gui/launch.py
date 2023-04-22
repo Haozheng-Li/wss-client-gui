@@ -16,7 +16,7 @@
 
 from wss.core import settings
 from wss.gui.ui import UIMainWindow
-from wss.gui.apps import dashboard
+from wss.gui.apps import cameras
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QMainWindow
@@ -94,13 +94,9 @@ class WSSMainWindow(QMainWindow):
 			self.setAttribute(Qt.WA_TranslucentBackground)
 
 	def setup_apps(self):
-		self.accessories_page = dashboard.views.AccessoriesView()
+		self.accessories_page = cameras.views.CamerasView()
 		self.accessories_page.setup_ui()
-		self.ui.setup_right_app_page(self.accessories_page)
-		
-		self.cameras_page = dashboard.views.CamerasView()
-		self.cameras_page.setup_ui()
-		self.ui.setup_left_app_page(self.cameras_page)
+		self.ui.add_app(self.accessories_page)
 
 	def init_sidebar(self):
 		self.ui.sidebar.add_menus(self.add_left_menus)
