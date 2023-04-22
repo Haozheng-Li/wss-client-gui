@@ -110,7 +110,6 @@ class UIMainWindow(object):
 	
 	def setup_sidebar(self):
 		sidebar_margin = settings.APP_SIDEBAR_MARGINS
-		sidebar_minimum_width = settings.APP_SIDEBAR_WIDTH["minimum"]
 		sidebar_maximum_width = settings.APP_SIDEBAR_WIDTH["maximum"]
 
 		self.sidebar_frame = QFrame()

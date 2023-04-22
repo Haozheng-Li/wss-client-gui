@@ -62,7 +62,7 @@ class CamerasView(QWidget):
 		self.layout.addWidget(self.content)
 
 	def show_camera_frame(self):
-		flag, self.image = self.cap.read()  # 从视频流中读取
+		flag, self.image = self.cap.read()
 
 		show = cv2.resize(self.image, (640, 480))
 		show = cv2.cvtColor(show, cv2.COLOR_BGR2RGB)
@@ -154,7 +154,7 @@ class AccessoryBox(QWidget):
 		self.camera_figure.setMinimumSize(64, 64)
 		self.camera_figure.setObjectName(u"pic")
 		self.camera_figure.setScaledContents(True)
-		self.camera_figure.setPixmap(QPixmap(settings.BASE_DIR / 'static/image/usb-camera.png'))  # 图片路径
+		self.camera_figure.setPixmap(QPixmap(settings.BASE_DIR / 'static/image/usb-cameras.png'))  # 图片路锟斤拷
 
 		self.container_layout.addWidget(self.camera_figure)
 

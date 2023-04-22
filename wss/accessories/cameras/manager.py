@@ -7,8 +7,8 @@
 import cv2
 import numpy as np
 
-from wss.camera.base import CameraBase
-from wss.camera.expections import CameraDostNotExist, CameraRunningModeError
+from wss.accessories.cameras.base import CameraBase
+from wss.accessories.cameras.expections import CameraDostNotExist, CameraRunningModeError
 
 
 __all__ = ['CameraManager']
@@ -36,11 +36,27 @@ class CameraManager:
 
 		# detector
 		self.detector = None
+
+	@staticmethod
+	def count_cameras(max_cameras=4):
+		available_cameras = 0
+
+		for camera_index in range(max_cameras):
+			cap = cv2.VideoCapture(camera_index, cv2.CAP_ANY)
+
+			if cap is None or not cap.isOpened():
+				cap.release()
+				break
+			else:
+				available_cameras += 1
+				cap.release()
+
+		return available_cameras
 		
 	def _camera_init(self, camera_id) -> object:
 		camera = CameraBase(camera_id)
 		self._cameras.append(camera)
-		print("Camera manager - Init camera: id {}".format(camera_id))
+		print("Camera manager - Init cameras: id {}".format(camera_id))
 		return camera
 
 	def initialize_cameras(self, number) -> None:
@@ -52,14 +68,14 @@ class CameraManager:
 		if camera_obj:
 			camera_obj.stop()
 			camera_obj.release()
-			print("Camera manager - Stop camera: id {}".format(camera_obj.camera_id))
+			print("Camera manager - Stop cameras: id {}".format(camera_obj.camera_id))
 
 	@staticmethod
 	def _start_camera(camera_obj) -> None:
 		if camera_obj:
 			camera_obj.start('../dataset/crosswalk.avi')
 			# camera_obj.start(camera_obj.get_camera_id())
-			print("Camera manager - Start camera: id {}".format(camera_obj.camera_id))
+			print("Camera manager - Start cameras: id {}".format(camera_obj.camera_id))
 
 	def set_camera_properties(self, width, height, codec, fps):
 		for camera in self._cameras:
@@ -101,7 +117,7 @@ class CameraManager:
 
 	def switch_camera(self, camera_id) -> None:
 		if self._running_mode != self.MODE_PULLING:
-			raise CameraRunningModeError("Switch camera should be running in pulling mode!")
+			raise CameraRunningModeError("Switch cameras should be running in pulling mode!")
 		camera = self.get_camera_by_id(camera_id)
 		camera.start()
 		self.activated_cameras.append(camera)

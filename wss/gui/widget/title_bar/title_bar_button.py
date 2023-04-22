@@ -12,6 +12,9 @@
 #     https://opensource.org/licenses/MIT
 #
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
+
+from wss.core import settings
+
 from PySide6.QtCore import QPoint, QEvent, QRect, Qt
 from PySide6.QtGui import QColor, QPainter, QPixmap, QBrush
 from PySide6.QtWidgets import QGraphicsDropShadowEffect, QLabel, QPushButton
@@ -234,7 +237,7 @@ class _ToolTip(QLabel):
         border-radius: 17px;
         border: 0px solid transparent;
         border-right: 3px solid {_context_color};
-        font: 800 9pt "Segoe UI";
+        font: 800 9pt "{_wss_font}";
     }}
     """
 
@@ -252,7 +255,8 @@ class _ToolTip(QLabel):
 		style = self.style_tooltip.format(
 			_dark_one=dark_one,
 			_context_color=context_color,
-			_text_foreground=text_foreground
+			_text_foreground=text_foreground,
+			_wss_font=settings.APP_FONT['family'],
 		)
 		self.setObjectName(u"label_tooltip")
 		self.setStyleSheet(style)

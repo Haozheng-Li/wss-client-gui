@@ -58,7 +58,7 @@ class CameraBase:
 			self._thread.start()
 			self.start_time = time.time()
 		else:
-			print("Please open camera first")
+			print("Please open cameras first")
 
 	def stop(self):
 		self.keep_running = False
@@ -110,9 +110,9 @@ class CameraBase:
 					self.grabbed = grabbed
 					self.frame = frame
 			except RuntimeError:
-				print("Could not read image from camera")
+				print("Could not read image from cameras")
 			except Exception as ee:
-				print("camera error: {}".format(ee))
+				print("cameras error: {}".format(ee))
 
 	def read(self, show_time=False, show_fps=False):
 		frame = []

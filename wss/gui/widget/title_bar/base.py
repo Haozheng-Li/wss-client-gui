@@ -16,6 +16,7 @@
 from PySide6.QtSvgWidgets import QSvgWidget
 
 from wss.gui.utils import set_resource
+from wss.core import settings
 from wss.gui.widget.title_bar.title_bar_button import PyTitleButton
 from wss.gui.widget.div import VerticalDiv
 
@@ -56,7 +57,7 @@ class PyTitleBar(QWidget):
 			context_color="#6c99f4",
 			text_foreground="#8a95aa",
 			radius=8,
-			font_family="Segoe UI",
+			font_family=settings.APP_FONT['family'],
 			title_size=10,
 			is_custom_title_bar=False,
 	):
