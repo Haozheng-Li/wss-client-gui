@@ -38,16 +38,6 @@ class CamerasView(QWidget):
         self.left_page_title_div = None
         self.left_page_title = None
 
-    def setup_left_page_title(self):
-        self.left_page_title = QLabel()
-        self.left_page_title.setText('Cameras')
-        self.left_page_title.setMaximumHeight(20)
-        self.left_page_title.setStyleSheet(f"font: 12pt '{settings.APP_FONT['family']}'")
-        self.left_page_frame_layout.addWidget(self.left_page_title)
-
-        self.left_page_title_div = HorizontalDiv(theme.DARK_FOUR)
-        self.left_page_frame_layout.addWidget(self.left_page_title_div)
-
     def setup_ui(self):
         self.setObjectName('cameras')
 
@@ -58,6 +48,7 @@ class CamerasView(QWidget):
         self.setup_left_page()
         self.setup_right_page()
 
+        self.setup_left_page_content()
         self.setup_right_page_content()
 
     def setup_left_page(self):
@@ -100,6 +91,11 @@ class CamerasView(QWidget):
         self.right_page_content.setup_ui()
         self.right_page_layout.addWidget(self.right_page_content)
 
+    def setup_left_page_content(self):
+        self.left_page_content = CameraFigureView()
+        self.left_page_content.setup_ui()
+        self.left_page_frame_layout.addWidget(self.left_page_content)
+
 
 class AvailableCamerasView(QWidget):
     def __init__(self):
@@ -112,7 +108,7 @@ class AvailableCamerasView(QWidget):
 
     def setup_title(self):
         self.title = QLabel()
-        self.title.setText('available_cameras')
+        self.title.setText('Available Cameras')
         self.title.setStyleSheet(f"font: 12pt '{settings.APP_FONT['family']}'")
         self.title.setMaximumHeight(20)
         self.layout.addWidget(self.title)
@@ -185,7 +181,6 @@ class AvailableCameraBox(QWidget):
         self.camera_figure.setObjectName(u"pic")
         self.camera_figure.setScaledContents(True)
         self.camera_figure.setPixmap(QPixmap(settings.BASE_DIR / 'static/image/usb-cameras.png'))
-        print(settings.BASE_DIR / 'static/image/usb-cameras.png')
 
         self.container_layout.addWidget(self.camera_figure)
 
@@ -206,3 +201,48 @@ class AvailableCameraBox(QWidget):
         self.verticalLayout.addWidget(self.checkBox)
         self.container_layout.addWidget(self.frame)
         self.wrapper_layout.addWidget(self.container)
+
+
+class CameraFigureView(QWidget):
+    def __init__(self):
+        super(CameraFigureView, self).__init__()
+        self.camera_figure_content_layout = None
+        self.camera_frame_preview = None
+        self.camera_figure_content = None
+        self.title_div = None
+        self.title = None
+        self.content_layout = None
+
+    def setup_title(self):
+        self.title = QLabel()
+        self.title.setText('Camera Figure')
+        self.title.setStyleSheet(f"font: 12pt '{settings.APP_FONT['family']}'")
+        self.title.setMaximumHeight(20)
+        self.content_layout.addWidget(self.title)
+
+        self.title_div = HorizontalDiv(theme.DARK_FOUR)
+        self.content_layout.addWidget(self.title_div)
+
+    def setup_ui(self):
+        self.setObjectName('camera_figure')
+        
+        self.content_layout = QVBoxLayout(self)
+        self.content_layout.setSpacing(15)
+        self.content_layout.setObjectName(u"camera_figure_layout")
+        self.content_layout.setContentsMargins(12, 12, 12, 12)
+
+        self.setup_title()
+        
+        self.camera_figure_content = QFrame()
+        self.camera_figure_content_layout = QHBoxLayout(self.camera_figure_content)
+        self.content_layout.addWidget(self.camera_figure_content)
+
+        self.setup_camera_preview_page()
+
+    def setup_camera_preview_page(self):
+        self.camera_frame_preview = QLabel()
+        self.camera_frame_preview.setObjectName(u"pic")
+        self.camera_frame_preview.setScaledContents(True)
+        self.camera_frame_preview.setPixmap(QPixmap(settings.BASE_DIR / 'static/image/usb-cameras.png'))
+
+        self.camera_figure_content_layout.addWidget(self.camera_frame_preview)
