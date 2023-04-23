@@ -11,7 +11,19 @@ from wss.accessories.cameras.base import CameraBase
 from wss.accessories.cameras.expections import CameraDostNotExist, CameraRunningModeError
 
 
-__all__ = ['CameraManager']
+__all__ = ['get_camera_manager']
+
+CAMERA_MANAGER = None
+
+
+def get_camera_manager():
+	global CAMERA_MANAGER
+	if not CAMERA_MANAGER:
+		CAMERA_MANAGER = CameraManager()
+	return CAMERA_MANAGER
+
+
+
 
 
 class CameraManager:
@@ -73,8 +85,7 @@ class CameraManager:
 	@staticmethod
 	def _start_camera(camera_obj) -> None:
 		if camera_obj:
-			camera_obj.start('../dataset/crosswalk.avi')
-			# camera_obj.start(camera_obj.get_camera_id())
+			camera_obj.start(camera_obj.get_camera_id())
 			print("Camera manager - Start cameras: id {}".format(camera_obj.camera_id))
 
 	def set_camera_properties(self, width, height, codec, fps):
@@ -122,6 +133,23 @@ class CameraManager:
 		camera.start()
 		self.activated_cameras.append(camera)
 
+	def get_frame(self):
+		pass
+
+	def get_merge_frame(self, show_time=False, show_fps=False):
+		cameras_merge_frame = None
+		for index, camera in enumerate(self._cameras):
+			_, frame = camera.read(show_time, show_fps)
+
+			if not index:
+				cameras_merge_frame = frame
+			elif not index % 2:
+				cameras_merge_frame = np.vstack((cameras_merge_frame, frame))
+			else:
+				cameras_merge_frame = np.hstack((cameras_merge_frame, frame))
+
+		return cameras_merge_frame
+
 	def show(self, camera_id, show_time=False, show_fps=False) -> None:
 		"""
 		!!Important!! show function will block the main thread
@@ -144,17 +172,7 @@ class CameraManager:
 		!!Important!! show all function will block the main thread
 		"""
 		while True:
-			cameras_merge_frame = None
-			for index, camera in enumerate(self._cameras):
-				_, frame = camera.read(show_time, show_fps)
-
-				if not index:
-					cameras_merge_frame = frame
-				elif not index % 2:
-					cameras_merge_frame = np.vstack((cameras_merge_frame, frame))
-				else:
-					cameras_merge_frame = np.hstack((cameras_merge_frame, frame))
-
+			cameras_merge_frame = self.get_merge_frame(show_time, show_fps)
 			cv2.imshow('All Cameras', cameras_merge_frame)
 			key = cv2.waitKey(1) & 0xff
 			if key == 27:  # Esc
@@ -170,6 +188,6 @@ class CameraManager:
 
 if __name__ == '__main__':
 	camera_manager = CameraManager()
-	camera_manager.initialize_cameras(2)
+	camera_manager.initialize_cameras(1)
 	camera_manager.start_all()
 	camera_manager.show_all(show_time=True, show_fps=True)

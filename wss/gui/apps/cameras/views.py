@@ -12,12 +12,16 @@
 #     https://opensource.org/licenses/MIT
 #
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
+
+import cv2
 from PySide6.QtCore import QSize, QTimer
 from PySide6.QtGui import QPixmap, QImage
 
 from wss.core import settings
 from wss.gui.style import theme
 from wss.gui.widget.div import HorizontalDiv
+
+from wss.accessories.cameras import get_camera_manager
 
 from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget, QHBoxLayout, QFrame, QListWidget, QListWidgetItem, QCheckBox
 
@@ -212,12 +216,21 @@ class AvailableCameraBox(QWidget):
 class CameraFigureView(QWidget):
     def __init__(self):
         super(CameraFigureView, self).__init__()
+        self.capture = None
+        self.timer = None
+        self.title = None
+        self.title_div = None
+
         self.camera_figure_content_layout = None
         self.camera_frame_preview = None
         self.camera_figure_content = None
-        self.title_div = None
-        self.title = None
+
         self.content_layout = None
+
+        self.timer = QTimer()
+        self.timer.timeout.connect(self._update_camera_frame)
+        self.timer.start(30)
+        self.camera_manager = None
 
     def setup_title(self):
         self.title = QLabel()
@@ -228,6 +241,9 @@ class CameraFigureView(QWidget):
 
         self.title_div = HorizontalDiv(theme.DARK_FOUR)
         self.content_layout.addWidget(self.title_div)
+
+    def start_show_camera(self):
+        pass
 
     def setup_ui(self):
         self.setObjectName('camera_figure')
@@ -250,5 +266,11 @@ class CameraFigureView(QWidget):
         self.camera_frame_preview.setObjectName(u"pic")
         self.camera_frame_preview.setScaledContents(True)
         self.camera_frame_preview.setPixmap(QPixmap(settings.BASE_DIR / 'static/image/usb-camera.png'))
-        print(settings.BASE_DIR / 'static/image/usb-camera.png')
         self.camera_figure_content_layout.addWidget(self.camera_frame_preview)
+
+    def _update_camera_frame(self):
+        if not self.camera_manager:
+            self.camera_manager = get_camera_manager()
+        frame = cv2.cvtColor(self.camera_manager.get_merge_frame(), cv2.COLOR_BGR2RGB)
+        qimage = QImage(frame.data, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
+        self.camera_frame_preview.setPixmap(QPixmap.fromImage(qimage))
