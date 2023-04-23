@@ -30,7 +30,7 @@ class LaunchManager:
 		self.camera_manager = None
 
 	def launch_wss(self):
-		self.launch_camera()
+		# self.launch_camera()
 		self.launch_gui()
 
 	def launch_camera(self):

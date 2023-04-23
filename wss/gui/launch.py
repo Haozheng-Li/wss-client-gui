@@ -33,6 +33,14 @@ class WSSMainWindow(QMainWindow):
 			"is_active" : True
 		},
 		{
+			"btn_icon": "icon_home.svg",
+			"btn_id": "btn_home",
+			"btn_text": "Log",
+			"btn_tooltip": "Event log",
+			"show_top": True,
+			"is_active": False
+		},
+		{
 			"btn_icon" : "icon_info.svg",
 			"btn_id" : "btn_info",
 			"btn_text" : "Information",
@@ -94,9 +102,8 @@ class WSSMainWindow(QMainWindow):
 			self.setAttribute(Qt.WA_TranslucentBackground)
 
 	def setup_apps(self):
-		self.accessories_page = cameras.views.CamerasView()
-		self.accessories_page.setup_ui()
-		self.ui.add_app(self.accessories_page)
+		accessories_page = cameras.views.CamerasView()
+		self.ui.add_app(accessories_page)
 
 	def init_sidebar(self):
 		self.ui.sidebar.add_menus(self.add_left_menus)
@@ -104,3 +111,6 @@ class WSSMainWindow(QMainWindow):
 	def init_title_bar(self):
 		self.ui.title_bar.add_menus(self.add_title_bar_menus)
 		self.ui.title_bar.set_title("Welcome to WSS")
+
+	def sidebar_button_clicked(self, event):
+		pass

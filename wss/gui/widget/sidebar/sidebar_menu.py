@@ -155,16 +155,12 @@ class PyLeftMenu(QWidget):
 					self.div_bottom.show()
 					self.bottom_layout.addWidget(self.menu)
 
-	# LEFT MENU EMIT SIGNALS
-	# ///////////////////////////////////////////////////////////////
 	def btn_clicked(self):
 		self.clicked.emit(self.menu)
 
 	def btn_released(self):
 		self.released.emit(self.menu)
 
-	# EXPAND / RETRACT LEF MENU
-	# ///////////////////////////////////////////////////////////////
 	def toggle_animation(self):
 		# CREATE ANIMATION
 		self.animation = QPropertyAnimation(self._parent, b"minimumWidth")
@@ -183,8 +179,6 @@ class PyLeftMenu(QWidget):
 		self.animation.setDuration(self._duration_time)
 		self.animation.start()
 
-	# SELECT ONLY ONE BTN
-	# ///////////////////////////////////////////////////////////////
 	def select_only_one(self, widget: str):
 		for btn in self.findChildren(QPushButton):
 			if btn.objectName() == widget:
@@ -192,8 +186,6 @@ class PyLeftMenu(QWidget):
 			else:
 				btn.set_active(False)
 
-	# SELECT ONLY ONE TAB BTN
-	# ///////////////////////////////////////////////////////////////
 	def select_only_one_tab(self, widget: str):
 		for btn in self.findChildren(QPushButton):
 			if btn.objectName() == widget:
@@ -201,20 +193,14 @@ class PyLeftMenu(QWidget):
 			else:
 				btn.set_active_tab(False)
 
-	# DESELECT ALL BTNs
-	# ///////////////////////////////////////////////////////////////
 	def deselect_all(self):
 		for btn in self.findChildren(QPushButton):
 			btn.set_active(False)
 
-	# DESELECT ALL TAB BTNs
-	# ///////////////////////////////////////////////////////////////
 	def deselect_all_tab(self):
 		for btn in self.findChildren(QPushButton):
 			btn.set_active_tab(False)
 
-	# SETUP APP
-	# ///////////////////////////////////////////////////////////////
 	def setup_ui(self):
 		# ADD MENU LAYOUT
 		self.left_menu_layout = QVBoxLayout(self)

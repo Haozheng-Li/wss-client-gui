@@ -23,9 +23,6 @@ def get_camera_manager():
 	return CAMERA_MANAGER
 
 
-
-
-
 class CameraManager:
 	"""
 	Important! In macOS or Linux, CameraManager should be run in main thread.
@@ -133,7 +130,12 @@ class CameraManager:
 		camera.start()
 		self.activated_cameras.append(camera)
 
-	def get_frame(self):
+	def get_frame(self, camera_id, show_time=False, show_fps=False):
+		camera = self.get_camera_by_id(camera_id)
+		if camera.get_open_status():
+			return camera.read(show_time, show_fps)
+
+	def camera_properties(self, camera_id):
 		pass
 
 	def get_merge_frame(self, show_time=False, show_fps=False):
@@ -184,10 +186,3 @@ class CameraManager:
 			camera.enable_detector(detector)
 
 		print("Camera Manager - Set detector: {}".format(detector))
-
-
-if __name__ == '__main__':
-	camera_manager = CameraManager()
-	camera_manager.initialize_cameras(1)
-	camera_manager.start_all()
-	camera_manager.show_all(show_time=True, show_fps=True)

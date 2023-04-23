@@ -42,6 +42,8 @@ class CamerasView(QWidget):
         self.left_page_title_div = None
         self.left_page_title = None
 
+        self.setup_ui()
+
     def setup_ui(self):
         self.setObjectName('cameras')
 
@@ -229,7 +231,7 @@ class CameraFigureView(QWidget):
 
         self.timer = QTimer()
         self.timer.timeout.connect(self._update_camera_frame)
-        self.timer.start(30)
+        # self.timer.start(30)
         self.camera_manager = None
 
     def setup_title(self):
@@ -263,14 +265,14 @@ class CameraFigureView(QWidget):
 
     def setup_camera_preview_page(self):
         self.camera_frame_preview = QLabel()
-        self.camera_frame_preview.setObjectName(u"pic")
+        self.camera_frame_preview.setObjectName(u"camera_frame_preview")
         self.camera_frame_preview.setScaledContents(True)
-        self.camera_frame_preview.setPixmap(QPixmap(settings.BASE_DIR / 'static/image/usb-camera.png'))
         self.camera_figure_content_layout.addWidget(self.camera_frame_preview)
 
     def _update_camera_frame(self):
         if not self.camera_manager:
             self.camera_manager = get_camera_manager()
-        frame = cv2.cvtColor(self.camera_manager.get_merge_frame(), cv2.COLOR_BGR2RGB)
+        frame = cv2.cvtColor(self.camera_manager.get_merge_frame(show_time=True, show_fps=True), cv2.COLOR_BGR2RGB)
         qimage = QImage(frame.data, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
         self.camera_frame_preview.setPixmap(QPixmap.fromImage(qimage))
+
