@@ -67,7 +67,7 @@ class PyLeftMenuButton(QPushButton):
 		self._icon_color_hover = icon_color_hover
 		self._icon_color_pressed = icon_color_pressed
 		self._icon_color_active = icon_color_active
-		self._set_icon_color = self._icon_color  # Set icon color
+		self._set_icon_color = self._icon_color  # Set logo color
 		self._set_bg_color = self._dark_one  # Set BG color
 		self._set_text_foreground = text_foreground
 		self._set_text_active = text_active

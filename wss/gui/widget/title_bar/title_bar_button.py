@@ -93,7 +93,7 @@ class PyTitleButton(QPushButton):
 		return self._is_active
 
 	# PAINT EVENT
-	# painting the button and the icon
+	# painting the button and the logo
 	# ///////////////////////////////////////////////////////////////
 	def paintEvent(self, event):
 		# PAINTER

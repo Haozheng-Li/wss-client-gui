@@ -15,3 +15,4 @@
 
 
 from wss.gui.widget.sidebar_new.sidebar_menu import SidebarMenu
+from wss.gui.widget.sidebar_new.sidebar_button import SidebarButton
