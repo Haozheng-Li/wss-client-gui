@@ -12,7 +12,7 @@
 #     https://opensource.org/licenses/MIT
 #
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
-from PySide6.QtCore import QSize
+from PySide6.QtCore import QSize, QTimer
 from PySide6.QtGui import QPixmap, QImage
 
 from wss.core import settings
@@ -147,6 +147,12 @@ class AvailableCamerasView(QWidget):
 class AvailableCameraBox(QWidget):
     def __init__(self):
         super(AvailableCameraBox, self).__init__()
+        self.checkBox = None
+        self.label = None
+        self.verticalLayout = None
+        self.frame = None
+        self.container = None
+        self.wrapper_layout = None
         self.camera_figure = None
         self.container_layout = None
         self.setStyleSheet("background:#fff;")
@@ -157,19 +163,19 @@ class AvailableCameraBox(QWidget):
 
     def setup_ui(self):
         self.setStyleSheet(f"""
-		    QFrame {{ 
-				background-color: {theme.BG_TWO};
-        }}""")
+        QFrame {{ 
+        background-color: {theme.BG_TWO};
+            }}""")
+        
         self.wrapper_layout = QHBoxLayout(self)
         self.container = QFrame()
         self.container.setObjectName(u'container')
         self.container.setStyleSheet(f"""
-
-	        #container {{
-		        border-radius: 8px;
-		        border: 3px solid #568af2;
-	        }}
-	    """)
+        #container {{
+        border-radius: 8px;
+        border: 3px solid #568af2;
+        }}
+        """)
         self.container_layout = QHBoxLayout(self.container)
         self.container_layout.setObjectName(u"horizontalLayout")
         self.container_layout.setContentsMargins(10, 0, 0, 0)
@@ -180,7 +186,7 @@ class AvailableCameraBox(QWidget):
         self.camera_figure.setMinimumSize(64, 64)
         self.camera_figure.setObjectName(u"pic")
         self.camera_figure.setScaledContents(True)
-        self.camera_figure.setPixmap(QPixmap(settings.BASE_DIR / 'static/image/usb-cameras.png'))
+        self.camera_figure.setPixmap(QPixmap(settings.BASE_DIR / 'static/image/usb-camera.png'))
 
         self.container_layout.addWidget(self.camera_figure)
 
@@ -225,14 +231,14 @@ class CameraFigureView(QWidget):
 
     def setup_ui(self):
         self.setObjectName('camera_figure')
-        
+
         self.content_layout = QVBoxLayout(self)
         self.content_layout.setSpacing(15)
         self.content_layout.setObjectName(u"camera_figure_layout")
         self.content_layout.setContentsMargins(12, 12, 12, 12)
 
         self.setup_title()
-        
+
         self.camera_figure_content = QFrame()
         self.camera_figure_content_layout = QHBoxLayout(self.camera_figure_content)
         self.content_layout.addWidget(self.camera_figure_content)
@@ -243,6 +249,6 @@ class CameraFigureView(QWidget):
         self.camera_frame_preview = QLabel()
         self.camera_frame_preview.setObjectName(u"pic")
         self.camera_frame_preview.setScaledContents(True)
-        self.camera_frame_preview.setPixmap(QPixmap(settings.BASE_DIR / 'static/image/usb-cameras.png'))
-
+        self.camera_frame_preview.setPixmap(QPixmap(settings.BASE_DIR / 'static/image/usb-camera.png'))
+        print(settings.BASE_DIR / 'static/image/usb-camera.png')
         self.camera_figure_content_layout.addWidget(self.camera_frame_preview)
