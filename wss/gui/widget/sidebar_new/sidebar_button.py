@@ -54,9 +54,16 @@ class SidebarButton(QFrame):
         self.button_logo = QLabel()
         self.button_logo.setFixedSize(40, 40)
         self.button_logo.setScaledContents(True)
-        self.button_logo.setStyleSheet("color:#fff")
         self.button_logo.setPixmap(QPixmap(settings.BASE_DIR / 'static/image/icon/camera.png'))
         self.bg_layout.addWidget(self.button_logo, 0, Qt.AlignHCenter)
+
+    def set_active(self):
+        self.bg_frame.setStyleSheet("background:#f2fbf3; border-radius: 30px;")
+        self.button_name.setStyleSheet("font: 15pt;color:#393b3c;")
+        self.button_logo.setPixmap(QPixmap(settings.BASE_DIR / 'static/image/icon/camera-active.png'))
+
+
+
 
 
 

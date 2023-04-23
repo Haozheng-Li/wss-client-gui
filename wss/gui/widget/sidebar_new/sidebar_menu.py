@@ -85,6 +85,7 @@ class SidebarMenu(QWidget):
     def add_menu(self):
         button = SidebarButton()
         button2 = SidebarButton()
+        button2.set_active()
         self.sidebar_top_layout.addWidget(button)
         self.sidebar_top_layout.addWidget(button2)
 
