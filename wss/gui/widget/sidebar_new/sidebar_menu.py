@@ -93,6 +93,7 @@ class SidebarMenu(QWidget):
         button2.set_data({'text': 'Logs', 'icon_path': settings.BASE_DIR / 'static/image/icon/camera.png'})
         self.buttons.append(button)
         self.buttons.append(button2)
+        button.set_active()
         button.clicked.connect(self.sidebar_button_clicked)
         button2.clicked.connect(self.sidebar_button_clicked)
         self.sidebar_top_layout.addWidget(button)

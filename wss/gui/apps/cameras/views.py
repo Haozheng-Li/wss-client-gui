@@ -87,8 +87,8 @@ class CamerasView(QWidget):
         ''')
 
         self.right_page_layout = QVBoxLayout(self.right_page_frame)
-        self.right_page_layout.setContentsMargins(5, 5, 5, 5)
-        self.right_page_layout.setSpacing(0)
+        self.right_page_layout.setContentsMargins(5, 12, 5, 12)
+        self.right_page_layout.setSpacing(12)
 
         self.content_layout.addWidget(self.right_page_frame)
 
