@@ -87,7 +87,6 @@ class WSSMainWindow(QMainWindow):
 	def init_ui(self):
 		self.ui = UIMainWindow()
 		self.ui.setup_ui(self)
-		self.init_sidebar()
 		self.init_title_bar()
 
 	def init_window_property(self):
@@ -104,9 +103,6 @@ class WSSMainWindow(QMainWindow):
 	def setup_apps(self):
 		accessories_page = cameras.views.CamerasView()
 		self.ui.add_app(accessories_page)
-
-	def init_sidebar(self):
-		self.ui.sidebar.add_menus(self.add_left_menus)
 
 	def init_title_bar(self):
 		self.ui.title_bar.add_menus(self.add_title_bar_menus)

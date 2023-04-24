@@ -14,7 +14,7 @@
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
 
 
-DARK_ONE = "#1B1E23"
+DARK_ONE = "#272A2D"
 DARK_TWO = "#1E2229"
 DARK_THREE = "#21252D"
 DARK_FOUR = "#272C36"

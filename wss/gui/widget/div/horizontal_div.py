@@ -13,11 +13,12 @@
 #
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
 
+from wss.gui.style import theme
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QFrame
 
 
 class HorizontalDiv(QWidget):
-	def __init__(self, color):
+	def __init__(self, color=theme.DARK_FOUR):
 		super(HorizontalDiv, self).__init__()
 		self.layout = None
 		self.line = None

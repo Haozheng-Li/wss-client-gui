@@ -16,13 +16,16 @@ from PySide6.QtGui import QPixmap
 
 from wss.core import settings
 from wss.gui.style import theme
+from wss.gui.widget.div import HorizontalDiv
 from wss.gui.widget.sidebar_new.sidebar_button import SidebarButton
 
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QFrame, QLabel, QHBoxLayout
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 
 
 class SidebarMenu(QWidget):
+    sidebar_clicked = Signal(str)
+
     def __init__(self):
         super(SidebarMenu, self).__init__()
         self.icon_frame_layout = None
@@ -35,6 +38,8 @@ class SidebarMenu(QWidget):
         self.sidebar_bottom_layout = None
         self.sidebar_top_layout = None
         self.main_layout = None
+
+        self.buttons = []
 
         self.setup_ui()
 
@@ -53,7 +58,7 @@ class SidebarMenu(QWidget):
         self.sidebar_top_menu = QFrame()
         self.sidebar_top_layout = QVBoxLayout(self.sidebar_top_menu)
         self.sidebar_top_layout.setContentsMargins(0, 30, 0, 20)
-        self.sidebar_top_layout.setSpacing(20)
+        self.sidebar_top_layout.setSpacing(25)
 
         self.sidebar_bottom_menu = QFrame()
         self.sidebar_bottom_menu.setStyleSheet("background:#00ff00")
@@ -83,11 +88,21 @@ class SidebarMenu(QWidget):
         self.icon_frame_layout.addWidget(self.icon, 0, Qt.AlignVCenter)
 
     def add_menu(self):
-        button = SidebarButton()
-        button2 = SidebarButton()
-        button2.set_active()
+        button = SidebarButton(size=100)
+        button2 = SidebarButton(size=100)
+        self.buttons.append(button)
+        self.buttons.append(button2)
+        button.clicked.connect(self.sidebar_button_clicked)
+        button2.clicked.connect(self.sidebar_button_clicked)
         self.sidebar_top_layout.addWidget(button)
         self.sidebar_top_layout.addWidget(button2)
 
-    def add_menus(self, data):
-        pass
+    def sidebar_button_clicked(self, clicked_button):
+        for button in self.buttons:
+            if button == clicked_button:
+                button.set_active()
+            else:
+                button.set_inactive()
+
+        self.sidebar_clicked.emit(clicked_button.get_text())
+
