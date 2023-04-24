@@ -121,22 +121,6 @@ class UIMainWindow(object):
             sidebar_margin,
             sidebar_margin
         )
-
-        # self.sidebar = PyLeftMenu(
-        #     parent=self.sidebar_frame,
-        #     app_parent=self.central_widget,  # For tooltip parent
-        #     dark_one=theme.DARK_ONE,
-        #     dark_three=theme.DARK_THREE,
-        #     dark_four=theme.DARK_FOUR,
-        #     bg_one=theme.BG_ONE,
-        #     icon_color=theme.ICON_COLOR,
-        #     icon_color_hover=theme.ICON_HOVER,
-        #     icon_color_pressed=theme.ICON_PRESSED,
-        #     icon_color_active=theme.ICON_ACTIVE,
-        #     context_color=theme.CONTEXT_COLOR,
-        #     text_foreground=theme.TEXT_FOREGROUND,
-        #     text_active=theme.TEXT_ACTIVE
-        # )
         self.sidebar = SidebarMenu()
         self.sidebar_layout.addWidget(self.sidebar)
         self.layout_wrapper_layout.addWidget(self.sidebar_frame)
@@ -189,6 +173,9 @@ class UIMainWindow(object):
 
         self.footer_layout.addWidget(self.footer)
         self.container_layout.addWidget(self.footer_frame)
+
+    def get_sidebar(self):
+        return self.sidebar
 
     def setup_titlebar(self):
         self.title_bar_frame = QFrame()

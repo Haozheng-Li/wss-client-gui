@@ -17,6 +17,7 @@
 from wss.core import settings
 from wss.gui.ui import UIMainWindow
 from wss.gui.apps import cameras
+from wss.gui.apps import log_manager
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QMainWindow
@@ -87,11 +88,15 @@ class WSSMainWindow(QMainWindow):
 	def init_ui(self):
 		self.ui = UIMainWindow()
 		self.ui.setup_ui(self)
+		self.init_sidebar()
 		self.init_title_bar()
 
 	def init_window_property(self):
 		self.resize(*settings.APP_WINDOW_START_UP_SIZE)
 		self.setMinimumSize(*settings.APP_WINDOW_START_UP_SIZE)
+
+	def init_sidebar(self):
+		self.ui.get_sidebar().sidebar_clicked.connect(self.sidebar_button_clicked)
 
 	def init_property(self):
 		self.setWindowTitle(settings.APP_NAME)
@@ -103,10 +108,12 @@ class WSSMainWindow(QMainWindow):
 	def setup_apps(self):
 		accessories_page = cameras.views.CamerasView()
 		self.ui.add_app(accessories_page)
+		log_manager_page = log_manager.views.LogManagerView
+		self.ui.add_app(log_manager_page)
 
 	def init_title_bar(self):
 		self.ui.title_bar.add_menus(self.add_title_bar_menus)
 		self.ui.title_bar.set_title("Welcome to WSS")
 
 	def sidebar_button_clicked(self, event):
-		pass
+		print(event)

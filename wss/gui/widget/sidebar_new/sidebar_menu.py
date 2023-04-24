@@ -90,6 +90,8 @@ class SidebarMenu(QWidget):
     def add_menu(self):
         button = SidebarButton(size=100)
         button2 = SidebarButton(size=100)
+        button.set_data({'text': 'Cameras', 'icon_path': settings.BASE_DIR / 'static/image/icon/camera.png'})
+        button2.set_data({'text': 'Logs', 'icon_path': settings.BASE_DIR / 'static/image/icon/camera.png'})
         self.buttons.append(button)
         self.buttons.append(button2)
         button.clicked.connect(self.sidebar_button_clicked)
