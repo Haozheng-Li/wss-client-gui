@@ -106,14 +106,14 @@ class WSSMainWindow(QMainWindow):
 			self.setAttribute(Qt.WA_TranslucentBackground)
 
 	def setup_apps(self):
-		accessories_page = cameras.views.CamerasView()
-		self.ui.add_app(accessories_page)
-		log_manager_page = log_manager.views.LogManagerView
-		self.ui.add_app(log_manager_page)
+		cameras_page = cameras.views.CamerasView()
+		self.ui.add_app('Cameras', cameras_page)
+		log_manager_page = log_manager.views.LogManagerView()
+		self.ui.add_app('Logs', log_manager_page)
 
 	def init_title_bar(self):
 		self.ui.title_bar.add_menus(self.add_title_bar_menus)
 		self.ui.title_bar.set_title("Welcome to WSS")
 
 	def sidebar_button_clicked(self, event):
-		print(event)
+		self.ui.switch_app_page(event)

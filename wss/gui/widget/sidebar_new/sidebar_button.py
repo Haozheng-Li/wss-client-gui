@@ -56,7 +56,7 @@ class SidebarButton(QFrame):
 
         self.button_text = QLabel()
         self.button_text.setMaximumHeight(20)
-        self.button_text.setStyleSheet("font: 15pt;color:#e5e8eb;")
+        self.button_text.setStyleSheet("font: 12pt;color:#e5e8eb;")
         self.bg_layout.addWidget(self.button_text, 0, Qt.AlignHCenter)
 
         self.button_logo = QLabel()

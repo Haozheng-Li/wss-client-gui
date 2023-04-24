@@ -56,6 +56,8 @@ class UIMainWindow(object):
         self.central_widget_layout = None
         self.left_app_pages = []
 
+        self.app_pages = {}
+
         self.parent = None
 
     def setup_ui(self, parent):
@@ -151,8 +153,16 @@ class UIMainWindow(object):
 
         self.main_content_layout.addWidget(self.app_stacked_widget)
 
-    def add_app(self, app_page_obj):
+    def add_app(self, app_name, app_page_obj):
+        self.app_pages[app_name] = app_page_obj
         self.app_stacked_widget.addWidget(app_page_obj)
+
+    def switch_app_page(self, app_name):
+        app_page_obj = self.app_pages.get(app_name, None)
+        if app_page_obj:
+            self.app_stacked_widget.setCurrentWidget(app_page_obj)
+        else:
+            raise ValueError('App name does not exist')
 
     def setup_footer(self):
         self.footer_frame = QFrame()

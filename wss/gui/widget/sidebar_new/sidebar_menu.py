@@ -61,7 +61,6 @@ class SidebarMenu(QWidget):
         self.sidebar_top_layout.setSpacing(25)
 
         self.sidebar_bottom_menu = QFrame()
-        self.sidebar_bottom_menu.setStyleSheet("background:#00ff00")
         self.sidebar_bottom_layout = QVBoxLayout(self.sidebar_bottom_menu)
         self.sidebar_bottom_layout.setContentsMargins(0, 0, 0, 0)
 
