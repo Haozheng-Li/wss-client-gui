@@ -13,16 +13,8 @@
 #
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
 
-import sys
-from PySide6.QtWidgets import QApplication
+from wss.core import launch
 
-from wss.core import settings
-from wss.gui.launch import WSSMainWindow
-
-if settings.USE_GUI:
-	app = QApplication(sys.argv)
-	window = WSSMainWindow()
-	window.show()
-	sys.exit(app.exec())
-else:
-	pass
+if __name__ == '__main__':
+	launch_manager = launch.LaunchManager()
+	launch_manager.launch_wss()
