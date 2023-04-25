@@ -19,9 +19,9 @@ import sys
 from PySide2.QtWidgets import QApplication
 
 from wss.core import settings
+from wss.gui import WSSMainWindow
 from wss.profiler import AsyncProfiler
 from wss.net import AsyncWebsocketClient
-from wss.gui.launch import WSSMainWindow
 from wss.accessories.cameras import get_camera_manager
 
 
