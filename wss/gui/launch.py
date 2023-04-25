@@ -19,8 +19,8 @@ from wss.gui.ui import UIMainWindow
 from wss.gui.apps import cameras
 from wss.gui.apps import log_manager
 
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QMainWindow
+from PySide2.QtCore import Qt
+from PySide2.QtWidgets import QMainWindow
 
 
 class WSSMainWindow(QMainWindow):

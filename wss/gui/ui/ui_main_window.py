@@ -20,7 +20,7 @@ from wss.gui.widget.sidebar_new import SidebarMenu
 from wss.gui.widget.title_bar import PyTitleBar
 
 from wss.gui.widget.footer import Footer
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFrame, QStackedWidget
+from PySide2.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QFrame, QStackedWidget
 
 
 class UIMainWindow(object):

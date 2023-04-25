@@ -17,8 +17,8 @@ from wss.gui.widget.table import table_style
 from wss.gui.style import theme
 from wss.gui.widget.div import HorizontalDiv
 
-from PySide6.QtCore import Qt, QRect
-from PySide6.QtWidgets import QWidget, QFrame, QVBoxLayout, QLabel, QHBoxLayout, QScrollArea, QTableWidget, QHeaderView, \
+from PySide2.QtCore import Qt, QRect
+from PySide2.QtWidgets import QWidget, QFrame, QVBoxLayout, QLabel, QHBoxLayout, QScrollArea, QTableWidget, QHeaderView, \
     QAbstractItemView, QTableWidgetItem
 
 

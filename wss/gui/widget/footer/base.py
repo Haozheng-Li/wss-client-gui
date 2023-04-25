@@ -12,8 +12,8 @@
 #     https://opensource.org/licenses/MIT
 #
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QSizePolicy, QSpacerItem, QWidget, QHBoxLayout, QFrame, QLabel
+from PySide2.QtCore import Qt
+from PySide2.QtWidgets import QSizePolicy, QSpacerItem, QWidget, QHBoxLayout, QFrame, QLabel
 
 
 class Footer(QWidget):

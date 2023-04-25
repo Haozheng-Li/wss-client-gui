@@ -14,7 +14,7 @@
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
 
 
-from PySide6.QtWidgets import QTableWidget
+from PySide2.QtWidgets import QTableWidget
 
 
 class PyTableWidget(QTableWidget):

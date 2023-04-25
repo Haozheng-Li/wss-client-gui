@@ -14,9 +14,9 @@
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
 
 import sys
-from PySide6.QtWidgets import QMainWindow
-from PySide6.QtCore import Qt, QPoint
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton
+from PySide2.QtWidgets import QMainWindow
+from PySide2.QtCore import Qt, QPoint
+from PySide2.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton
 
 
 class FramelessMainWindow(QMainWindow):

@@ -13,16 +13,16 @@
 #
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
 
-from PySide6.QtSvgWidgets import QSvgWidget
+# from PySide2.QtSvgWidgets import QSvgWidget
 
 from wss.gui.utils import set_resource
 from wss.core import settings
 from wss.gui.widget.title_bar.title_bar_button import PyTitleButton
 from wss.gui.widget.div import VerticalDiv
 
-from PySide6.QtCore import QSize, Signal, Qt
-from PySide6.QtGui import QCursor
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QFrame, QHBoxLayout, QLabel
+from PySide2.QtCore import QSize, Signal, Qt
+from PySide2.QtGui import QCursor
+from PySide2.QtWidgets import QWidget, QVBoxLayout, QFrame, QHBoxLayout, QLabel
 
 _is_maximized = False
 _old_size = QSize()
@@ -258,9 +258,9 @@ class PyTitleBar(QWidget):
 		self.top_logo = QLabel()
 		self.top_logo_layout = QVBoxLayout(self.top_logo)
 		self.top_logo_layout.setContentsMargins(0, 0, 0, 0)
-		self.logo_svg = QSvgWidget()
-		self.logo_svg.load(set_resource.set_svg_image(self._logo_image))
-		self.top_logo_layout.addWidget(self.logo_svg, Qt.AlignCenter, Qt.AlignCenter)
+		# self.logo_svg = QSvgWidget()
+		# self.logo_svg.load(set_resource.set_svg_image(self._logo_image))
+		# self.top_logo_layout.addWidget(self.logo_svg, Qt.AlignCenter, Qt.AlignCenter)
 
 		# TITLE LABEL
 		self.title_label = QLabel()

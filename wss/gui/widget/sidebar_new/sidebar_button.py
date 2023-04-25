@@ -15,9 +15,9 @@
 
 from wss.core import settings
 
-from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QVBoxLayout
+from PySide2.QtCore import Qt, Signal
+from PySide2.QtGui import QPixmap
+from PySide2.QtWidgets import QFrame, QHBoxLayout, QLabel, QVBoxLayout
 
 
 class SidebarButton(QFrame):
@@ -62,7 +62,7 @@ class SidebarButton(QFrame):
         self.button_logo = QLabel()
         self.button_logo.setFixedSize(40, 40)
         self.button_logo.setScaledContents(True)
-        self.button_logo.setPixmap(QPixmap(settings.BASE_DIR / 'static/image/icon/camera.png'))
+        self.button_logo.setPixmap(QPixmap(str(settings.BASE_DIR / 'static/image/icon/camera.png')))
         self.bg_layout.addWidget(self.button_logo, 0, Qt.AlignHCenter)
     
     def set_data(self, data):
@@ -79,11 +79,11 @@ class SidebarButton(QFrame):
         if self._is_active or self._is_pressed:
             self.button_text.setStyleSheet("font: 15pt;color:#393b3c;")
             self.bg_frame.setStyleSheet("background:#f2fbf3; border-radius: 30px;")
-            self.button_logo.setPixmap(QPixmap(settings.BASE_DIR / 'static/image/icon/camera-active.png'))
+            self.button_logo.setPixmap(QPixmap(str(settings.BASE_DIR / 'static/image/icon/camera-active.png')))
         else:
             self.button_text.setStyleSheet("font: 15pt;color:#e5e8eb;")
             self.bg_frame.setStyleSheet("background:#33383c; border-radius: 30px;")
-            self.button_logo.setPixmap(QPixmap(settings.BASE_DIR / 'static/image/icon/camera.png'))
+            self.button_logo.setPixmap(QPixmap(str(settings.BASE_DIR / 'static/image/icon/camera.png')))
 
     def set_active(self):
         self._is_active = True

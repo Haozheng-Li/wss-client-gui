@@ -13,7 +13,7 @@
 #
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
 
-from PySide6.QtWidgets import QWidget, QHBoxLayout, QFrame
+from PySide2.QtWidgets import QWidget, QHBoxLayout, QFrame
 
 
 class VerticalDiv(QWidget):

@@ -17,7 +17,7 @@
 from wss.accessories.cameras import get_camera_manager
 
 import sys
-from PySide6.QtWidgets import QApplication
+from PySide2.QtWidgets import QApplication
 
 from wss.core import settings
 from wss.gui.launch import WSSMainWindow
@@ -42,7 +42,7 @@ class LaunchManager:
 		self.app = QApplication(sys.argv)
 		self.window = WSSMainWindow()
 		self.window.show()
-		sys.exit(self.app.exec())
+		sys.exit(self.app.exec_())
 
 
 if __name__ == '__main__':

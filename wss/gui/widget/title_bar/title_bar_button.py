@@ -15,9 +15,9 @@
 
 from wss.core import settings
 
-from PySide6.QtCore import QPoint, QEvent, QRect, Qt
-from PySide6.QtGui import QColor, QPainter, QPixmap, QBrush
-from PySide6.QtWidgets import QGraphicsDropShadowEffect, QLabel, QPushButton
+from PySide2.QtCore import QPoint, QEvent, QRect, Qt
+from PySide2.QtGui import QColor, QPainter, QPixmap, QBrush
+from PySide2.QtWidgets import QGraphicsDropShadowEffect, QLabel, QPushButton
 
 
 class PyTitleButton(QPushButton):

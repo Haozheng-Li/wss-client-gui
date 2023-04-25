@@ -16,8 +16,8 @@
 from wss.gui.utils import set_resource
 from wss.gui.widget.div import HorizontalDiv
 from wss.gui.widget.sidebar.sidebar_button import PyLeftMenuButton
-from PySide6.QtCore import QPropertyAnimation, QEasingCurve, Qt, Signal
-from PySide6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QFrame
+from PySide2.QtCore import QPropertyAnimation, QEasingCurve, Qt, Signal
+from PySide2.QtWidgets import QWidget, QPushButton, QVBoxLayout, QFrame
 
 
 class PyLeftMenu(QWidget):

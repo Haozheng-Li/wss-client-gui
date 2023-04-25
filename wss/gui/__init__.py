@@ -17,8 +17,8 @@
 from wss.core import settings
 from wss.gui.ui import UIMainWindow
 
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QMainWindow, QApplication
+from PySide2.QtCore import Qt
+from PySide2.QtWidgets import QMainWindow, QApplication
 
 
 class WSSMainWindow(QMainWindow):

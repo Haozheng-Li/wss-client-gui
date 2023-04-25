@@ -12,15 +12,15 @@
 #     https://opensource.org/licenses/MIT
 #
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
-from PySide6.QtGui import QPixmap
+from PySide2.QtGui import QPixmap
 
 from wss.core import settings
 from wss.gui.style import theme
 from wss.gui.widget.div import HorizontalDiv
 from wss.gui.widget.sidebar_new.sidebar_button import SidebarButton
 
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QFrame, QLabel, QHBoxLayout
-from PySide6.QtCore import Qt, Signal
+from PySide2.QtWidgets import QWidget, QVBoxLayout, QFrame, QLabel, QHBoxLayout
+from PySide2.QtCore import Qt, Signal
 
 
 class SidebarMenu(QWidget):
@@ -80,7 +80,7 @@ class SidebarMenu(QWidget):
         self.bg_layout.addWidget(self.icon_frame)
 
         self.icon = QLabel()
-        self.icon.setPixmap(QPixmap(settings.BASE_DIR / 'static/image/logo/logo-sm.png'))
+        self.icon.setPixmap(QPixmap(str(settings.BASE_DIR / 'static/image/logo/logo-sm.png')))
         self.icon.setScaledContents(True)
         self.icon.setMaximumSize(60, 60)
         self.icon.setMinimumSize(60, 60)
@@ -89,8 +89,8 @@ class SidebarMenu(QWidget):
     def add_menu(self):
         button = SidebarButton(size=100)
         button2 = SidebarButton(size=100)
-        button.set_data({'text': 'Cameras', 'icon_path': settings.BASE_DIR / 'static/image/icon/camera.png'})
-        button2.set_data({'text': 'Logs', 'icon_path': settings.BASE_DIR / 'static/image/icon/camera.png'})
+        button.set_data({'text': 'Cameras', 'icon_path': str(settings.BASE_DIR / 'static/image/icon/camera.png')})
+        button2.set_data({'text': 'Logs', 'icon_path': str(settings.BASE_DIR / 'static/image/icon/camera.png')})
         self.buttons.append(button)
         self.buttons.append(button2)
         button.set_active()

@@ -14,8 +14,8 @@
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
 
 import cv2
-from PySide6.QtCore import QSize, QTimer
-from PySide6.QtGui import QPixmap, QImage
+from PySide2.QtCore import QSize, QTimer
+from PySide2.QtGui import QPixmap, QImage
 
 from wss.core import settings
 from wss.gui.style import theme
@@ -23,7 +23,7 @@ from wss.gui.widget.div import HorizontalDiv
 
 from wss.accessories.cameras import get_camera_manager
 
-from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget, QHBoxLayout, QFrame, QListWidget, QListWidgetItem, QCheckBox
+from PySide2.QtWidgets import QLabel, QVBoxLayout, QWidget, QHBoxLayout, QFrame, QListWidget, QListWidgetItem, QCheckBox
 
 
 class CamerasView(QWidget):
@@ -192,7 +192,7 @@ class AvailableCameraBox(QWidget):
         self.camera_figure.setMinimumSize(64, 64)
         self.camera_figure.setObjectName(u"pic")
         self.camera_figure.setScaledContents(True)
-        self.camera_figure.setPixmap(QPixmap(settings.BASE_DIR / 'static/image/usb-camera.png'))
+        self.camera_figure.setPixmap(QPixmap(str(settings.BASE_DIR / 'static/image/usb-camera.png')))
 
         self.container_layout.addWidget(self.camera_figure)
 
