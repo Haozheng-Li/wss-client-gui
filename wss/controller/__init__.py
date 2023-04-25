@@ -1,7 +1,7 @@
 # ============================================
 # wss-client-gui
 # Author: Haozheng Li
-# Created: 2023/4/20
+# Created: 2023/4/25
 #
 # A PyQt-based GUI library for WSS projects
 # ============================================
@@ -12,8 +12,3 @@
 #     https://opensource.org/licenses/MIT
 #
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
-
-from wss.net.async_websocket import AsyncWebsocketClient
-
-
-

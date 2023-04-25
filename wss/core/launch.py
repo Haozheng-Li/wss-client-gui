@@ -19,7 +19,7 @@ import sys
 from PySide2.QtWidgets import QApplication
 
 from wss.core import settings
-from wss.profiler import Profiler
+from wss.profiler import AsyncProfiler
 from wss.net import AsyncWebsocketClient
 from wss.gui.launch import WSSMainWindow
 from wss.accessories.cameras import get_camera_manager
@@ -42,7 +42,7 @@ class LaunchManager:
 		self.net_client.connect()
 
 	def init_profiler(self):
-		self.profiler = Profiler()
+		self.profiler = AsyncProfiler()
 		self.profiler.register_callback(self.on_profiler_update)
 
 	def launch_wss(self):

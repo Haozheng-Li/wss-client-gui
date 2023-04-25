@@ -24,53 +24,18 @@ from PySide2.QtWidgets import QMainWindow
 
 
 class WSSMainWindow(QMainWindow):
-	add_left_menus = [
+	add_title_bar_menus = [
 		{
-			"btn_icon" : "icon_home.svg",
-			"btn_id" : "btn_home",
-			"btn_text" : "Home",
-			"btn_tooltip" : "Home page",
-			"show_top" : True,
-			"is_active" : True
-		},
-		{
-			"btn_icon": "icon_home.svg",
-			"btn_id": "btn_home",
-			"btn_text": "Log",
-			"btn_tooltip": "Event log",
-			"show_top": True,
+			"btn_icon": "icon_search.svg",
+			"btn_id": "btn_search",
+			"btn_tooltip": "Search",
 			"is_active": False
 		},
 		{
-			"btn_icon" : "icon_info.svg",
-			"btn_id" : "btn_info",
-			"btn_text" : "Information",
-			"btn_tooltip" : "Open informations",
-			"show_top" : False,
-			"is_active" : False
-		},
-		{
-			"btn_icon" : "icon_settings.svg",
-			"btn_id" : "btn_settings",
-			"btn_text" : "Settings",
-			"btn_tooltip" : "Open settings",
-			"show_top" : False,
-			"is_active" : False
-		}
-	]
-
-	add_title_bar_menus = [
-		{
-			"btn_icon" : "icon_search.svg",
-			"btn_id" : "btn_search",
-			"btn_tooltip" : "Search",
-			"is_active" : False
-		},
-		{
-			"btn_icon" : "icon_settings.svg",
-			"btn_id" : "btn_top_settings",
-			"btn_tooltip" : "Top settings",
-			"is_active" : False
+			"btn_icon": "icon_settings.svg",
+			"btn_id": "btn_top_settings",
+			"btn_tooltip": "Top settings",
+			"is_active": False
 		}
 	]
 
