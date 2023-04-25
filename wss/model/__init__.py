@@ -18,6 +18,7 @@ class WSSModel:
 	def __init__(self):
 		self.callbacks = {}
 		self.accessories_data = []
+		self.logs_data = []
 
 	def set_accessories_data(self, data):
 		self.accessories_data = data
