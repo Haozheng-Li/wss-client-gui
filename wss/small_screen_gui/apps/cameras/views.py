@@ -60,16 +60,16 @@ class CamerasView(QWidget):
     def setup_left_page(self):
         self.left_page_frame = QFrame()
         self.left_page_frame.setObjectName("left_page_frame")
-        # self.left_page_frame.setStyleSheet(f'''
-        #     #left_page_frame {{
-        #         border-radius: 8px;
-        #         background-color: {theme.BG_TWO};
-        #     }}
-        # ''')
+        self.left_page_frame.setStyleSheet(f'''
+            #left_page_frame {{
+                border-radius: 8px;
+                background-color: {theme.BG_TWO};
+            }}
+        ''')
         self.left_page_frame_layout = QVBoxLayout(self.left_page_frame)
         self.left_page_frame_layout.setSpacing(15)
         self.left_page_frame_layout.setObjectName(u"left_page_frame_layout")
-        self.left_page_frame_layout.setContentsMargins(5, 12, 5, 12)
+        self.left_page_frame_layout.setContentsMargins(12, 12, 12, 12)
 
         self.content_layout.addWidget(self.left_page_frame)
 
@@ -138,13 +138,12 @@ class AvailableCamerasView(QWidget):
 
         self.layout.addWidget(self.available_cameras_container)
 
-        camera_num = get_camera_manager().detect_cameras()
+        item = AvailableCameraBox()
+        item2 = AvailableCameraBox()
+        self.add_accessory(item)
+        self.add_accessory(item2)
 
-        for camera in range(camera_num):
-            camera_box = AvailableCameraBox()
-            self.add_available_camera(camera_box)
-
-    def add_available_camera(self, widget):
+    def add_accessory(self, widget):
         item = QListWidgetItem()
         item.setSizeHint(QSize(100, 100))
         self.available_cameras_container.addItem(item)
@@ -252,9 +251,9 @@ class CameraFigureView(QWidget):
         self.setObjectName('camera_figure')
 
         self.content_layout = QVBoxLayout(self)
-        self.content_layout.setSpacing(10)
+        self.content_layout.setSpacing(15)
         self.content_layout.setObjectName(u"camera_figure_layout")
-        self.content_layout.setContentsMargins(5, 5, 5, 5)
+        self.content_layout.setContentsMargins(12, 12, 12, 12)
 
         self.setup_title()
 

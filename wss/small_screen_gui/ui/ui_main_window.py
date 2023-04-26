@@ -15,7 +15,8 @@
 
 from wss.core import settings
 from wss.gui.style import theme
-from wss.gui.widget.sidebar import SidebarMenu
+from wss.gui.widget.sidebar import PyLeftMenu
+from wss.gui.widget.sidebar_new import SidebarMenu
 from wss.gui.widget.title_bar import PyTitleBar
 
 from wss.gui.widget.footer import Footer

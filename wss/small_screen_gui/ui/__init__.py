@@ -1,7 +1,7 @@
 # ============================================
 # wss-client-gui
 # Author: Haozheng Li
-# Created: 2023/4/26
+# Created: 2023/4/19
 #
 # A PyQt-based GUI library for WSS projects
 # ============================================
@@ -14,9 +14,4 @@
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
 
 
-class WSSConfig:
-	def __init__(self):
-		pass
-
-	def font_settings(self):
-		pass
+from wss.gui.ui.ui_main_window import UIMainWindow

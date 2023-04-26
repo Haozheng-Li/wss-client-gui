@@ -47,7 +47,7 @@ class CameraManager:
 		self.detector = None
 
 	@staticmethod
-	def count_cameras(max_cameras=4):
+	def detect_cameras(max_cameras=4):
 		available_cameras = 0
 
 		for camera_index in range(max_cameras):

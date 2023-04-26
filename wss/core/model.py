@@ -1,7 +1,7 @@
 # ============================================
 # wss-client-gui
 # Author: Haozheng Li
-# Created: 2023/4/26
+# Created: 2023/4/25
 #
 # A PyQt-based GUI library for WSS projects
 # ============================================
@@ -14,9 +14,10 @@
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
 
 
-class WSSConfig:
+class WSSModel:
 	def __init__(self):
-		pass
+		self.intruder_detect_data = []
 
-	def font_settings(self):
-		pass
+	def set_intruder_detect_data(self, data):
+		self.intruder_detect_data.append(data)
+

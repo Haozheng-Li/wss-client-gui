@@ -67,10 +67,10 @@ CUSTOM_TITLE_BAR = False
 
 APP_ANIMATION_TIME = 500
 APP_WINDOW_MINIUM_SIZE = (960, 540)
-APP_WINDOW_START_UP_SIZE = (1400, 720)
+APP_WINDOW_START_UP_SIZE = (1024, 600)
 APP_SIDEBAR_MARGINS = 3
-APP_SIDEBAR_WIDTH = {"minimum": 50, "maximum": 240}
-APP_RIGHT_COLUMN_SIZE = {"minimum": 0, "maximum": 260}
+APP_SIDEBAR_WIDTH = {"minimum": 50, "maximum": 180}
+APP_RIGHT_COLUMN_SIZE = {"minimum": 0, "maximum": 200}
 # APP_FONT = {"family": "Segoe UI", "title_size": 10, "text_size": 9}  # Windows
 APP_FONT = {"family": "Arial", "title_size": 10, "text_size": 9}  # MacOS
 

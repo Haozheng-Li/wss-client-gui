@@ -20,7 +20,7 @@ import queue
 import threading
 import websocket
 
-from wss.core.exception import ConnectionException
+from wss.core.exceptions import ConnectionException
 
 
 __all__ = ['AsyncWebsocketClient']

@@ -29,14 +29,12 @@ class LaunchManager:
 	def __init__(self):
 		self.profiler = None
 		self.window = None
-		self.app = None
+		self.gui_app = None
 		self.net_client = None
 		self.camera_manager = None
 		self._accept_operation_command = False
-		
-		self.init_net()
 
-	def init_net(self):
+	def launch_net_client(self):
 		self.net_client = AsyncWebsocketClient(settings.WSS_CONNECTION_URL.format(api_key=settings.WSS_SECRET_KEY))
 		self.net_client.register_message_callback(self.on_receive_message)
 		self.net_client.connect()
@@ -46,6 +44,7 @@ class LaunchManager:
 		self.profiler.register_callback(self.on_profiler_update)
 
 	def launch_wss(self):
+		# self.launch_net_client()
 		# self.launch_camera()
 		self.launch_gui()
 
@@ -55,10 +54,10 @@ class LaunchManager:
 		self.camera_manager.start_all()
 
 	def launch_gui(self):
-		self.app = QApplication(sys.argv)
+		self.gui_app = QApplication(sys.argv)
 		self.window = WSSMainWindow()
 		self.window.show()
-		sys.exit(self.app.exec_())
+		sys.exit(self.gui_app.exec_())
 
 	def on_profiler_update(self, data):
 		self.net_client.send(data, 'profiler')
@@ -75,7 +74,6 @@ class LaunchManager:
 			          message_type='operation_feedback')
 
 	def enable_profiler(self, operation, feedback=True):
-		print(operation)
 		if operation == 'enable':
 			self.profiler.start()
 		else:
@@ -131,7 +129,7 @@ class LaunchManager:
 			with open(path, "rb") as f:
 				image_data = base64.b64encode(f.read()).decode("utf-8")
 				message['data_file'] = image_data
-			self.send(message=message, message_type='detect_event')
+			self.net_client.send(message=message, message_type='detect_event')
 
 
 if __name__ == '__main__':
