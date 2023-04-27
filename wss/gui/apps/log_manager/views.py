@@ -12,11 +12,12 @@
 #     https://opensource.org/licenses/MIT
 #
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
+
 from wss.core import settings
 from wss.gui.widget.table import table_style
-from wss.gui.style import theme
-from wss.gui.widget.div import HorizontalDiv
+from wss.gui.widget.dialog import ResourcePreviewDialog
 
+from PySide2.QtGui import QFont
 from PySide2.QtCore import Qt, QRect
 from PySide2.QtWidgets import QWidget, QFrame, QVBoxLayout, QLabel, QHBoxLayout, QScrollArea, QTableWidget, QHeaderView, \
     QAbstractItemView, QTableWidgetItem
@@ -25,6 +26,7 @@ from PySide2.QtWidgets import QWidget, QFrame, QVBoxLayout, QLabel, QHBoxLayout,
 class LogManagerView(QWidget):
     def __init__(self):
         super(LogManagerView, self).__init__()
+        self.preview_dialog = None
         self.log_table = None
         self.sub_title = None
         self.scroll_area = None
@@ -84,6 +86,7 @@ class LogManagerView(QWidget):
         self.log_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.log_table.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.log_table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.log_table.cellClicked.connect(self.show_resource_preview)
 
         style_format = table_style.style.format(
             _radius=8,
@@ -103,7 +106,7 @@ class LogManagerView(QWidget):
 
     def set_logs(self):
         self.column_headers = []
-        headers = ['Thread stage', 'Time', 'Image/Video Capture']
+        headers = ['Thread status', 'Time', 'Image/Video Capture']
 
         for index, each_header in enumerate(headers):
             header_obj = QTableWidgetItem()
@@ -115,16 +118,26 @@ class LogManagerView(QWidget):
         for x in range(10):
             row_number = self.log_table.rowCount()
             self.log_table.insertRow(row_number)
-            self.log_table.setItem(row_number, 0, QTableWidgetItem(str("Wanderson")))
+            self.log_table.setItem(row_number, 0, QTableWidgetItem(str(1)))
             self.log_table.setItem(row_number, 1, QTableWidgetItem(str("vfx_on_fire_" + str(x))))
 
             self.pass_text = QTableWidgetItem()
+            font = QFont("Arial", 9)
+            font.setUnderline(True)
+            self.pass_text.setFont(font)
             self.pass_text.setTextAlignment(Qt.AlignCenter)
-            self.pass_text.setText("12345" + str(x))
+            self.pass_text.setText('preview')
 
             self.log_table.setItem(row_number, 2, self.pass_text)
             self.log_table.setItem(row_number, 3, self.pass_text)
 
             self.log_table.setRowHeight(row_number, 22)
+
+    def show_resource_preview(self, row, column):
+        if column == 2:
+            image_path = self.log_table.item(row, column).text()
+            self.preview_dialog = ResourcePreviewDialog(str(settings.BASE_DIR / 'output/event2_09-59-53.jpg'))
+            self.preview_dialog.show()
+
 
         

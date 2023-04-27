@@ -318,6 +318,7 @@ class CameraFigureView(QWidget):
             frame = cv2.cvtColor(self.camera_manager.get_merge_frame(), cv2.COLOR_BGR2RGB)
         else:
             frame = cv2.cvtColor(self.camera_manager.get_camera_frame(self.preview_option_id), cv2.COLOR_BGR2RGB)
+
         frame_image = QImage(frame.data, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
         self.camera_frame_preview.setPixmap(QPixmap.fromImage(frame_image))
 
