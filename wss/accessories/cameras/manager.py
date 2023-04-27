@@ -48,6 +48,8 @@ class CameraManager:
 
 		self.cameras_num = None
 
+		self.camera_started = False
+
 	def detect_cameras(self, max_cameras=4):
 		if self.cameras_num is not None:
 			return self.cameras_num
@@ -76,6 +78,9 @@ class CameraManager:
 		for camera_id in range(number):
 			self._camera_init(camera_id)
 
+	def get_camera_start_status(self):
+		return self.camera_started
+
 	@staticmethod
 	def _stop_camera(camera_obj) -> None:
 		if camera_obj:
@@ -83,8 +88,8 @@ class CameraManager:
 			camera_obj.release()
 			print("Camera manager - Stop cameras: id {}".format(camera_obj.camera_id))
 
-	@staticmethod
-	def _start_camera(camera_obj) -> None:
+	def _start_camera(self, camera_obj) -> None:
+		self.camera_started = True
 		if camera_obj:
 			camera_obj.start(camera_obj.get_camera_id())
 			print("Camera manager - Start cameras: id {}".format(camera_obj.camera_id))
@@ -155,6 +160,11 @@ class CameraManager:
 				cameras_merge_frame = np.hstack((cameras_merge_frame, frame))
 
 		return cameras_merge_frame
+
+	def get_camera_frame(self, camera_id, show_time=False, show_fps=False):
+		camera = self.get_camera_by_id(camera_id)
+		_, frame = camera.read(show_time, show_fps)
+		return frame
 
 	def show(self, camera_id, show_time=False, show_fps=False) -> None:
 		"""

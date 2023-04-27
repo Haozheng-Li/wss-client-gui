@@ -14,7 +14,7 @@
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
 
 import cv2
-from PySide2.QtCore import QSize, QTimer
+from PySide2.QtCore import QSize, QTimer, Signal
 from PySide2.QtGui import QPixmap, QImage
 
 from wss.core import settings
@@ -54,18 +54,12 @@ class CamerasView(QWidget):
         self.setup_left_page()
         self.setup_right_page()
 
-        self.setup_left_page_content()
         self.setup_right_page_content()
+        self.setup_left_page_content()
 
     def setup_left_page(self):
         self.left_page_frame = QFrame()
         self.left_page_frame.setObjectName("left_page_frame")
-        # self.left_page_frame.setStyleSheet(f'''
-        #     #left_page_frame {{
-        #         border-radius: 8px;
-        #         background-color: {theme.BG_TWO};
-        #     }}
-        # ''')
         self.left_page_frame_layout = QVBoxLayout(self.left_page_frame)
         self.left_page_frame_layout.setSpacing(15)
         self.left_page_frame_layout.setObjectName(u"left_page_frame_layout")
@@ -93,8 +87,9 @@ class CamerasView(QWidget):
         self.content_layout.addWidget(self.right_page_frame)
 
     def setup_right_page_content(self):
-        self.right_page_content = AvailableCamerasView()
+        self.right_page_content = CameraPreviewOptionsView()
         self.right_page_content.setup_ui()
+        self.right_page_content.option_change_signal.connect(self.on_preview_option_change)
         self.right_page_layout.addWidget(self.right_page_content)
 
     def setup_left_page_content(self):
@@ -102,11 +97,18 @@ class CamerasView(QWidget):
         self.left_page_content.setup_ui()
         self.left_page_frame_layout.addWidget(self.left_page_content)
 
+    def on_preview_option_change(self, option_id):
+        self.left_page_content.on_preview_option_change(option_id)
 
-class AvailableCamerasView(QWidget):
+
+class CameraPreviewOptionsView(QWidget):
+    
+    option_change_signal = Signal(int)
+    OPTION_MERGE = 99
+    
     def __init__(self):
         super().__init__()
-        self.available_cameras_container = None
+        self.options_container = None
         self.title_div = None
         self.title = None
         self.layout = None
@@ -133,44 +135,48 @@ class AvailableCamerasView(QWidget):
 
         self.setup_title()
 
-        self.available_cameras_container = QListWidget(self)
-        self.available_cameras_container.setStyleSheet(f"background-color: {theme.BG_TWO}; border-radius: 8px;")
-        self.available_cameras_container.setObjectName(u"available_cameras_container")
+        self.options_container = QListWidget(self)
+        self.options_container.setStyleSheet(f"background-color: {theme.BG_TWO}; border-radius: 8px;")
+        self.options_container.setObjectName(u"options_container")
 
-        self.layout.addWidget(self.available_cameras_container)
+        self.layout.addWidget(self.options_container)
 
         camera_num = get_camera_manager().detect_cameras()
 
-        camera_box = AvailableCameraBox(text='Merge View', icon=str(settings.BASE_DIR / 'static/image/icon/camera.png'))
-        camera_box.set_active()
-        self.add_available_camera(camera_box)
+        option_merge_box = CameraPreviewOptionsBox(text='Merge View',
+                                             icon=str(settings.BASE_DIR / 'static/image/icon/camera.png'),
+                                             option_id=self.OPTION_MERGE)
+        option_merge_box.set_active()
+        self.add_options(option_merge_box)
 
         for index in range(camera_num):
-            camera_box = AvailableCameraBox(text='USB Camera{}'.format(index),
-                                            icon=str(settings.BASE_DIR / 'static/image/usb-camera.png'))
-            self.add_available_camera(camera_box)
+            option_box = CameraPreviewOptionsBox(text='USB Camera{}'.format(index),
+                                            icon=str(settings.BASE_DIR / 'static/image/usb-camera.png'),
+                                                 option_id=index)
+            self.add_options(option_box)
 
-        self.available_cameras_container.setCurrentRow(0)
-        self.available_cameras_container.currentItemChanged.connect(self.on_item_changed)
+        self.options_container.setCurrentRow(0)
+        self.options_container.currentItemChanged.connect(self.on_item_changed)
 
     def on_item_changed(self, current, previous):
-        selected_widget = self.available_cameras_container.itemWidget(current)
-        pre_selected_widget = self.available_cameras_container.itemWidget(previous)
+        selected_widget = self.options_container.itemWidget(current)
+        pre_selected_widget = self.options_container.itemWidget(previous)
         selected_widget.set_active()
         pre_selected_widget.set_inactive()
+        self.option_change_signal.emit(selected_widget.get_option_id())
 
-    def add_available_camera(self, widget):
+    def add_options(self, widget):
         item = QListWidgetItem()
         item.setSizeHint(QSize(120, 100))
         self.boxes.append(item)
-        self.available_cameras_container.addItem(item)
-        self.available_cameras_container.setItemWidget(item, widget)
+        self.options_container.addItem(item)
+        self.options_container.setItemWidget(item, widget)
 
 
-class AvailableCameraBox(QWidget):
-    def __init__(self, text, icon):
-        super(AvailableCameraBox, self).__init__()
-        self.checkBox = None
+class CameraPreviewOptionsBox(QWidget):
+    def __init__(self, text, icon, option_id):
+        super(CameraPreviewOptionsBox, self).__init__()
+        self.option_id = option_id
         self.label = None
         self.verticalLayout = None
         self.frame = None
@@ -182,6 +188,9 @@ class AvailableCameraBox(QWidget):
         self.text = text
         self.icon = icon
         self.setup_ui()
+
+    def get_option_id(self):
+        return self.option_id
 
     def set_active(self):
         self.container.setStyleSheet(f"""
@@ -247,6 +256,7 @@ class AvailableCameraBox(QWidget):
 class CameraFigureView(QWidget):
     def __init__(self):
         super(CameraFigureView, self).__init__()
+        self.preview_option_id = CameraPreviewOptionsView.OPTION_MERGE
         self.capture = None
         self.timer = None
         self.title = None
@@ -295,13 +305,19 @@ class CameraFigureView(QWidget):
         self.camera_frame_preview.setScaledContents(True)
         self.camera_figure_content_layout.addWidget(self.camera_frame_preview)
 
+    def on_preview_option_change(self, option_id):
+        self.preview_option_id = option_id
+
     def _update_camera_frame(self):
         if not self.camera_manager:
             self.camera_manager = get_camera_manager()
-        if not self.camera_manager.detect_cameras():
+        if not self.camera_manager.detect_cameras() or not self.camera_manager.get_camera_start_status():
             return
-        return
-        frame = cv2.cvtColor(self.camera_manager.get_merge_frame(show_time=True, show_fps=True), cv2.COLOR_BGR2RGB)
-        qimage = QImage(frame.data, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
-        self.camera_frame_preview.setPixmap(QPixmap.fromImage(qimage))
+
+        if self.preview_option_id == 99:
+            frame = cv2.cvtColor(self.camera_manager.get_merge_frame(), cv2.COLOR_BGR2RGB)
+        else:
+            frame = cv2.cvtColor(self.camera_manager.get_camera_frame(self.preview_option_id), cv2.COLOR_BGR2RGB)
+        frame_image = QImage(frame.data, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
+        self.camera_frame_preview.setPixmap(QPixmap.fromImage(frame_image))
 

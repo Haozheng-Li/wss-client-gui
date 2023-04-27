@@ -93,7 +93,7 @@ class CamerasView(QWidget):
         self.content_layout.addWidget(self.right_page_frame)
 
     def setup_right_page_content(self):
-        self.right_page_content = AvailableCamerasView()
+        self.right_page_content = CameraPreviewOptionsView()
         self.right_page_content.setup_ui()
         self.right_page_layout.addWidget(self.right_page_content)
 
@@ -103,10 +103,10 @@ class CamerasView(QWidget):
         self.left_page_frame_layout.addWidget(self.left_page_content)
 
 
-class AvailableCamerasView(QWidget):
+class CameraPreviewOptionsView(QWidget):
     def __init__(self):
         super().__init__()
-        self.available_cameras_container = None
+        self.options_container = None
         self.title_div = None
         self.title = None
         self.layout = None
@@ -132,27 +132,27 @@ class AvailableCamerasView(QWidget):
 
         self.setup_title()
 
-        self.available_cameras_container = QListWidget(self)
-        self.available_cameras_container.setStyleSheet(f"background-color: {theme.BG_TWO}; border-radius: 8px;")
-        self.available_cameras_container.setObjectName(u"available_cameras_container")
+        self.options_container = QListWidget(self)
+        self.options_container.setStyleSheet(f"background-color: {theme.BG_TWO}; border-radius: 8px;")
+        self.options_container.setObjectName(u"options_container")
 
-        self.layout.addWidget(self.available_cameras_container)
+        self.layout.addWidget(self.options_container)
 
-        item = AvailableCameraBox()
-        item2 = AvailableCameraBox()
+        item = CameraPreviewOptionsBox()
+        item2 = CameraPreviewOptionsBox()
         self.add_accessory(item)
         self.add_accessory(item2)
 
     def add_accessory(self, widget):
         item = QListWidgetItem()
         item.setSizeHint(QSize(100, 100))
-        self.available_cameras_container.addItem(item)
-        self.available_cameras_container.setItemWidget(item, widget)
+        self.options_container.addItem(item)
+        self.options_container.setItemWidget(item, widget)
 
 
-class AvailableCameraBox(QWidget):
+class CameraPreviewOptionsBox(QWidget):
     def __init__(self):
-        super(AvailableCameraBox, self).__init__()
+        super(CameraPreviewOptionsBox, self).__init__()
         self.checkBox = None
         self.label = None
         self.verticalLayout = None
