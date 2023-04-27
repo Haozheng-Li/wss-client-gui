@@ -24,12 +24,19 @@ class WSSModel:
 	CALLBACK_TYPE = [
 		'intruder_status',
 		'intruder_detect_logs',
+		'detector_status',
 	]
 
 	def __init__(self):
 		self.intruder_status = self.NO_INTRUDER
+		self.detector_status = True
 		self.callback_funcs = {}
 		self.intruder_detect_logs = []
+
+	def set_detector_status(self, status):
+		self.detector_status = status
+		self.raise_callback('detector_status', status)
+		print('Detector status change to {}'.format(status))
 
 	def set_intruder_status(self, status: int):
 		if status not in range(1, 5):

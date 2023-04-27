@@ -34,6 +34,8 @@ class IntruderDetector(BaseCameraDetector):
 		self.detect_counter = 0
 		self.not_detect_counter = 0
 
+		self.detector_status = True
+
 		self.video_output_writer = None
 		self.video_output_path = ''
 
@@ -41,12 +43,20 @@ class IntruderDetector(BaseCameraDetector):
 
 		self.face_cascade = cv2.CascadeClassifier(str(settings.BASE_DIR / 'cv_models/haarcascade_frontalface_default.xml'))
 
+		wss_model.register_callback('detector_status', self.set_detector_status)
+
+	def set_detector_status(self, status):
+		self.detector_status = status
+
 	def check_path_validity(self):
 		if not os.path.exists(self.save_path):
 			print("Detector save path do not exist, create directory now.")
 			os.mkdir(self.save_path)
 
 	def detect(self, frame):
+		if not self.detector_status:
+			return frame
+
 		self.frame_counter += 1
 		frame_copy = frame.copy()
 		frame_copy = cv2.GaussianBlur(frame_copy, (11, 11), 0)

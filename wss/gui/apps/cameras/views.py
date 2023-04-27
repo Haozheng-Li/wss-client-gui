@@ -14,11 +14,13 @@
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
 
 import cv2
-from PySide2.QtCore import QSize, QTimer, Signal
+from PySide2.QtCore import QSize, QTimer, Signal, Qt
 from PySide2.QtGui import QPixmap, QImage
 
 from wss.core import settings
+from wss.core.model import wss_model
 from wss.gui.style import theme
+from wss.gui.widget.button import ToggleButton
 from wss.gui.widget.div import HorizontalDiv
 
 from wss.accessories.cameras import get_camera_manager
@@ -29,6 +31,7 @@ from PySide2.QtWidgets import QLabel, QVBoxLayout, QWidget, QHBoxLayout, QFrame,
 class CamerasView(QWidget):
     def __init__(self):
         super(CamerasView, self).__init__()
+        self.camera_settings_menu = None
         self.right_page_content = None
         self.left_page_content = None
         self.right_page_layout = None
@@ -50,9 +53,11 @@ class CamerasView(QWidget):
         self.content_layout = QHBoxLayout(self)
         self.content_layout.setSpacing(15)
         self.content_layout.setObjectName(u"content_layout")
-        self.content_layout.setContentsMargins(5, 5, 5, 5)
+        self.content_layout.setContentsMargins(0, 5, 5, 5)
         self.setup_left_page()
         self.setup_right_page()
+
+        self.setup_camera_settings_menu()
 
         self.setup_right_page_content()
         self.setup_left_page_content()
@@ -63,7 +68,7 @@ class CamerasView(QWidget):
         self.left_page_frame_layout = QVBoxLayout(self.left_page_frame)
         self.left_page_frame_layout.setSpacing(15)
         self.left_page_frame_layout.setObjectName(u"left_page_frame_layout")
-        self.left_page_frame_layout.setContentsMargins(5, 12, 5, 12)
+        self.left_page_frame_layout.setContentsMargins(0, 12, 5, 12)
 
         self.content_layout.addWidget(self.left_page_frame)
 
@@ -97,8 +102,72 @@ class CamerasView(QWidget):
         self.left_page_content.setup_ui()
         self.left_page_frame_layout.addWidget(self.left_page_content)
 
+    def setup_camera_settings_menu(self):
+        self.camera_settings_menu = CameraSettingsMenu()
+        self.left_page_frame_layout.addWidget(self.camera_settings_menu)
+
     def on_preview_option_change(self, option_id):
         self.left_page_content.on_preview_option_change(option_id)
+
+
+class CameraSettingsMenu(QWidget):
+    def __init__(self):
+        super(CameraSettingsMenu, self).__init__()
+        self.detect_switch_label = None
+        self.detect_switch = None
+        self.detect_switch_frame_layout = None
+        self.detect_switch_frame = None
+        self.thread_status_label = None
+        self.content_layout = None
+        self.bg = None
+        self.layout = None
+        self.setup_ui()
+
+    def setup_ui(self):
+        self.setObjectName('camera_preview_options')
+        self.setMaximumHeight(40)
+
+        self.layout = QHBoxLayout(self)
+        self.layout.setSpacing(0)
+        self.layout.setObjectName(u"layout")
+        self.layout.setContentsMargins(0, 0, 0, 0)
+
+        self.bg = QFrame()
+        self.bg.setStyleSheet(f"background: {theme.BG_TWO}; border-radius: 10;")
+        self.content_layout = QHBoxLayout(self.bg)
+        self.content_layout.setContentsMargins(10, 0, 10, 0)
+        self.content_layout.setSpacing(0)
+        self.layout.addWidget(self.bg)
+
+        self.thread_status_label = QLabel()
+        self.thread_status_label.setText("Thread status: 1")
+        self.thread_status_label.setStyleSheet(f"font:11pt; color: {theme.CONTEXT_COLOR}")
+        self.content_layout.addWidget(self.thread_status_label, 0, Qt.AlignLeft)
+
+        self.detect_switch_frame = QFrame()
+        self.detect_switch_frame.setStyleSheet("backgroud:#fff")
+        self.detect_switch_frame_layout = QHBoxLayout(self.detect_switch_frame)
+        self.detect_switch_frame_layout.setContentsMargins(10, 0, 5, 0)
+        self.detect_switch_frame_layout.setSpacing(10)
+
+        self.detect_switch = ToggleButton(            
+            width=50,
+            bg_color=theme.DARK_TWO,
+            circle_color=theme.ICON_COLOR,
+            active_color=theme.CONTEXT_COLOR)
+
+        self.detect_switch.switch_signal.connect(self.on_detect_switch_change)
+
+        self.detect_switch_label = QLabel()
+        self.detect_switch_label.setText("Detect status")
+        self.detect_switch_label.setStyleSheet(f"font:11pt; color: {theme.CONTEXT_COLOR}")
+        self.detect_switch_frame_layout.addWidget(self.detect_switch_label)
+        self.detect_switch_frame_layout.addWidget(self.detect_switch)
+
+        self.content_layout.addWidget(self.detect_switch_frame, 0, Qt.AlignRight)
+
+    def on_detect_switch_change(self, status):
+        wss_model.set_detector_status(status)
 
 
 class CameraPreviewOptionsView(QWidget):
@@ -126,7 +195,7 @@ class CameraPreviewOptionsView(QWidget):
         self.layout.addWidget(self.title_div)
 
     def setup_ui(self):
-        self.setObjectName('available_cameras')
+        self.setObjectName('camera_preview_options')
 
         self.layout = QVBoxLayout(self)
         self.layout.setSpacing(15)

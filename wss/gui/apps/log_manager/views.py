@@ -120,8 +120,6 @@ class LogManagerView(QWidget):
             self.column_headers.append(header_obj)
             self.log_table.setHorizontalHeaderItem(index, header_obj)
 
-        self.add_log({'intruder_type': 2, 'path': 'D:\Code\wss-client-gui\wss\output\event4_03-30-34.avi', 'time': datetime.datetime(2023, 4, 27, 3, 33, 21, 17730)})
-
     def add_log(self, data):
         intruder_status = data['intruder_type']
         resource_path = data['path']
