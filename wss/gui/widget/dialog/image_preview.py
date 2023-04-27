@@ -13,7 +13,7 @@
 #
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
 import os
-
+from PySide2.QtCore import QUrl
 from PySide2.QtMultimedia import QMediaPlayer, QMediaContent
 from PySide2.QtMultimediaWidgets import QVideoWidget
 from PySide2.QtWidgets import QVBoxLayout, QLabel, QDialog, QApplication
@@ -49,9 +49,9 @@ class MediaPreviewDialog(QDialog):
 			self.media_player = QMediaPlayer(self)
 			self.video_widget = QVideoWidget(self)
 			self.content_layout.addWidget(self.video_widget)
-			
+			video_url = QUrl.fromLocalFile(self.media_path.replace('\\', '/'))
 			self.media_player.setVideoOutput(self.video_widget)
-			self.media_player.setMedia(QMediaContent(self.media_path.replace('\\', '/')))
+			self.media_player.setMedia(QMediaContent(video_url))
 			self.media_player.play()
 
 	def focusOutEvent(self, event):
