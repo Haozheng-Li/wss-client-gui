@@ -48,9 +48,11 @@ class LaunchManager:
 	def init_profiler(self):
 		self.profiler = AsyncProfiler()
 		self.profiler.register_callback(self.on_profiler_update)
+		self.profiler.start()
 
 	def launch_wss(self):
 		# self.launch_net_client()
+		self.init_profiler()
 		self.launch_camera()
 		self.launch_camera_detector()
 		self.launch_gui()
@@ -72,6 +74,8 @@ class LaunchManager:
 		sys.exit(self.gui_app.exec_())
 
 	def on_profiler_update(self, data):
+		print(data)
+		return
 		self.net_client.send(data, 'profiler')
 
 	def enable_detection(self, operation, feedback=True):

@@ -270,6 +270,8 @@ class CameraFigureView(QWidget):
     def _update_camera_frame(self):
         if not self.camera_manager:
             self.camera_manager = get_camera_manager()
+        if not self.camera_manager.detect_cameras():
+            return
         frame = cv2.cvtColor(self.camera_manager.get_merge_frame(show_time=True, show_fps=True), cv2.COLOR_BGR2RGB)
         qimage = QImage(frame.data, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
         self.camera_frame_preview.setPixmap(QPixmap.fromImage(qimage))

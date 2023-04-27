@@ -46,11 +46,13 @@ class CameraManager:
 		# detector
 		self.detector = None
 
-		self.cameras_num = 0
+		self.cameras_num = None
 
 	def detect_cameras(self, max_cameras=4):
-		if self.cameras_num:
+		if self.cameras_num is not None:
 			return self.cameras_num
+
+		self.cameras_num = 0
 
 		for camera_index in range(max_cameras):
 			cap = cv2.VideoCapture(camera_index, cv2.CAP_ANY)

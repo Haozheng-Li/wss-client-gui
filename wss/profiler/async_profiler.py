@@ -80,7 +80,8 @@ class AsyncProfiler:
 		if self.m_running:
 			self.start()
 
-	def start(self):
+	def start(self, interval=5):
+		self.m_interval = interval
 		self.m_running = True
 		self.m_thread = threading.Timer(interval=self.m_interval, function=self.update_dynamic_info)
 		self.m_thread.start()
