@@ -51,8 +51,8 @@ class LaunchManager:
 		self.profiler.start()
 
 	def launch_wss(self):
-		# self.launch_net_client()
-		# self.init_profiler()
+		self.launch_net_client()
+		self.init_profiler()
 		self.launch_camera()
 		self.launch_camera_detector()
 		self.launch_gui()
