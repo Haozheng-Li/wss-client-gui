@@ -140,7 +140,7 @@ class CameraSettingsMenu(QWidget):
         self.layout.addWidget(self.bg)
 
         self.thread_status_label = QLabel()
-        self.thread_status_label.setText("Thread status: 1")
+        self.thread_status_label.setText("Intruder status: 1")
         self.thread_status_label.setStyleSheet(f"font:11pt; color: {theme.CONTEXT_COLOR}")
         self.content_layout.addWidget(self.thread_status_label, 0, Qt.AlignLeft)
 
@@ -157,6 +157,7 @@ class CameraSettingsMenu(QWidget):
             active_color=theme.CONTEXT_COLOR)
 
         self.detect_switch.switch_signal.connect(self.on_detect_switch_change)
+        wss_model.register_callback('intruder_status', self.on_thread_status_change)
 
         self.detect_switch_label = QLabel()
         self.detect_switch_label.setText("Detect status")
@@ -168,6 +169,9 @@ class CameraSettingsMenu(QWidget):
 
     def on_detect_switch_change(self, status):
         wss_model.set_detector_status(status)
+
+    def on_thread_status_change(self, status):
+        self.thread_status_label.setText("Intruder status: {}".format(status))
 
 
 class CameraPreviewOptionsView(QWidget):
