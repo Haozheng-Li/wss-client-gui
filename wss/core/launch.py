@@ -53,8 +53,8 @@ class LaunchManager:
 	def launch_wss(self):
 		# self.launch_net_client()
 		# self.init_profiler()
-		# self.launch_camera()
-		# self.launch_camera_detector()
+		self.launch_camera()
+		self.launch_camera_detector()
 		self.launch_gui()
 
 	def launch_camera(self):
@@ -63,9 +63,7 @@ class LaunchManager:
 		self.camera_manager.start_all()
 
 	def launch_camera_detector(self):
-		self.camera_detector = IntruderDetector(save_path=str(settings.BASE_DIR / 'output'))
-		self.camera_detector.register_callback(self.on_detect_event_change)
-		self.camera_manager.set_detector(self.camera_detector)
+		self.camera_manager.set_detector()
 
 	def launch_gui(self):
 		self.gui_app = QApplication(sys.argv)

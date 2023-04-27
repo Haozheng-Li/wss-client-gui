@@ -58,7 +58,7 @@ class WSSModel:
 		if callback_type not in self.CALLBACK_TYPE:
 			return
 
-		if not self.callback_funcs[callback_type]:
+		if callback_type not in self.callback_funcs:
 			self.callback_funcs[callback_type] = [func]
 		else:
 			self.callback_funcs[callback_type].append(func)

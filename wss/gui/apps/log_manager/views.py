@@ -12,10 +12,12 @@
 #     https://opensource.org/licenses/MIT
 #
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
+import datetime
 
 from wss.core import settings
+from wss.core.model import wss_model
 from wss.gui.widget.table import table_style
-from wss.gui.widget.dialog import ResourcePreviewDialog
+from wss.gui.widget.dialog import MediaPreviewDialog
 
 from PySide2.QtGui import QFont
 from PySide2.QtCore import Qt, QRect
@@ -26,6 +28,8 @@ from PySide2.QtWidgets import QWidget, QFrame, QVBoxLayout, QLabel, QHBoxLayout,
 class LogManagerView(QWidget):
     def __init__(self):
         super(LogManagerView, self).__init__()
+        self.column_headers = None
+        self.preview_text = None
         self.preview_dialog = None
         self.log_table = None
         self.sub_title = None
@@ -36,7 +40,8 @@ class LogManagerView(QWidget):
         self.title = None
         self.main_layout = None
         self.setup_ui()
-    
+        wss_model.register_callback('intruder_detect_logs', self.add_log)
+
     def setup_ui(self):
         self.main_layout = QVBoxLayout(self)
         self.main_layout.setContentsMargins(0, 5, 5, 5)
@@ -115,28 +120,42 @@ class LogManagerView(QWidget):
             self.column_headers.append(header_obj)
             self.log_table.setHorizontalHeaderItem(index, header_obj)
 
-        for x in range(10):
-            row_number = self.log_table.rowCount()
-            self.log_table.insertRow(row_number)
-            self.log_table.setItem(row_number, 0, QTableWidgetItem(str(1)))
-            self.log_table.setItem(row_number, 1, QTableWidgetItem(str("vfx_on_fire_" + str(x))))
+        self.add_log({'intruder_type': 2, 'path': 'D:\Code\wss-client-gui\wss\output\event4_03-30-34.avi', 'time': datetime.datetime(2023, 4, 27, 3, 33, 21, 17730)})
 
-            self.pass_text = QTableWidgetItem()
-            font = QFont("Arial", 9)
-            font.setUnderline(True)
-            self.pass_text.setFont(font)
-            self.pass_text.setTextAlignment(Qt.AlignCenter)
-            self.pass_text.setText('preview')
+    def add_log(self, data):
+        intruder_status = data['intruder_type']
+        resource_path = data['path']
+        log_time = data['time']
 
-            self.log_table.setItem(row_number, 2, self.pass_text)
-            self.log_table.setItem(row_number, 3, self.pass_text)
+        row_number = self.log_table.rowCount()
+        self.log_table.insertRow(row_number)
 
-            self.log_table.setRowHeight(row_number, 22)
+        normal_font = QFont("Arial", 12)
+
+        intruder_status_item = QTableWidgetItem(str(intruder_status))
+        intruder_status_item.setFont(normal_font)
+        intruder_status_item.setTextAlignment(Qt.AlignCenter)
+        self.log_table.setItem(row_number, 0, intruder_status_item)
+
+        log_time_item = QTableWidgetItem(log_time.strftime("%A, %B %d, %Y"))
+        log_time_item.setFont(normal_font)
+        log_time_item.setTextAlignment(Qt.AlignCenter)
+        self.log_table.setItem(row_number, 1, log_time_item)
+
+        self.preview_text = QTableWidgetItem()
+        font = QFont("Arial", 12)
+        font.setUnderline(True)
+        self.preview_text.setFont(font)
+        self.preview_text.setTextAlignment(Qt.AlignCenter)
+        self.preview_text.setText('preview')
+        self.preview_text.resource_path = resource_path
+        self.log_table.setItem(row_number, 2, self.preview_text)
+        self.log_table.setRowHeight(row_number, 40)
 
     def show_resource_preview(self, row, column):
         if column == 2:
-            image_path = self.log_table.item(row, column).text()
-            self.preview_dialog = ResourcePreviewDialog(str(settings.BASE_DIR / 'output/event2_09-59-53.jpg'))
+            resource_path = self.log_table.item(row, column).resource_path
+            self.preview_dialog = MediaPreviewDialog(resource_path)
             self.preview_dialog.show()
 
 

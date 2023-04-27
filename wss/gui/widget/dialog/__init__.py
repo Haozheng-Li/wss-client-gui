@@ -14,4 +14,4 @@
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
 
 
-from wss.gui.widget.dialog.image_preview import ResourcePreviewDialog
+from wss.gui.widget.dialog.image_preview import MediaPreviewDialog

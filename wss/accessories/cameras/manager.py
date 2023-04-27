@@ -13,6 +13,10 @@ from wss.accessories.cameras.expections import CameraDostNotExist, CameraRunning
 
 __all__ = ['get_camera_manager']
 
+from wss.core import settings
+
+from wss.detector import IntruderDetector
+
 CAMERA_MANAGER = None
 
 
@@ -42,9 +46,6 @@ class CameraManager:
 		# Camera show
 		self._show_status = False
 		self._show_thread = None
-
-		# detector
-		self.detector = None
 
 		self.cameras_num = None
 
@@ -194,9 +195,8 @@ class CameraManager:
 			if key == 27:  # Esc
 				break
 
-	def set_detector(self, detector) -> None:
-		self.detector = detector
+	def set_detector(self, ) -> None:
 		for camera in self._cameras:
+			detector = IntruderDetector(save_path=str(settings.BASE_DIR / 'output'))
 			camera.enable_detector(detector)
-
-		print("Camera Manager - Set detector: {}".format(detector))
+			print("Camera Manager - Set detector: {}".format(detector))

@@ -12,36 +12,51 @@
 #     https://opensource.org/licenses/MIT
 #
 # Copyright (c) 2023 Haozheng Li. All rights reserved.
+import os
 
+from PySide2.QtMultimedia import QMediaPlayer, QMediaContent
+from PySide2.QtMultimediaWidgets import QVideoWidget
 from PySide2.QtWidgets import QVBoxLayout, QLabel, QDialog, QApplication
 from PySide2.QtGui import QPixmap
 
 
-class ResourcePreviewDialog(QDialog):
-	def __init__(self, image_path):
-		super(ResourcePreviewDialog, self).__init__()
+class MediaPreviewDialog(QDialog):
+	def __init__(self, media_path):
+		super(MediaPreviewDialog, self).__init__()
 
+		self.video_widget = None
+		self.media_player = None
 		self.content_layout = None
 		self.image_label = None
 
-		self.image_path = image_path
+		self.media_path = media_path
 		self.setup_ui()
 		self.center()
 
 	def setup_ui(self):
-		self.setWindowTitle('Resource Preview')
+		self.setWindowTitle('Media Preview')
 		self.setGeometry(100, 100, 400, 300)
 
 		self.content_layout = QVBoxLayout(self)
 
-		self.image_label = QLabel(self)
-
-		self.image_label.setPixmap(QPixmap(self.image_path))
-		self.image_label.setScaledContents(True)
-
-		self.content_layout.addWidget(self.image_label)
+		_, ext = os.path.splitext(self.media_path)
+		if ext.lower() in ['.png', '.jpg', '.jpeg']:
+			self.image_label = QLabel(self)
+			self.image_label.setPixmap(QPixmap(self.media_path))
+			self.image_label.setScaledContents(True)
+			self.content_layout.addWidget(self.image_label)
+		elif ext.lower() in ['.avi', '.mp4']:
+			self.media_player = QMediaPlayer(self)
+			self.video_widget = QVideoWidget(self)
+			self.content_layout.addWidget(self.video_widget)
+			
+			self.media_player.setVideoOutput(self.video_widget)
+			self.media_player.setMedia(QMediaContent(self.media_path.replace('\\', '/')))
+			self.media_player.play()
 
 	def focusOutEvent(self, event):
+		if hasattr(self, 'media_player'):
+			self.media_player.stop()
 		self.close()
 
 	def center(self):
