@@ -21,11 +21,11 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # WSS URL
-WSS_CONNECTION_URL = "ws://127.0.0.1:8000/ws/device/{api_key}"
+WSS_CONNECTION_URL = "wss://wssweb.net/ws/device/{api_key}"
 
 # API_KEY for connection with WSS platform
 
-WSS_SECRET_KEY = ''
+WSS_SECRET_KEY = 'JDlvDLMcdMq1v_ilRzYYPijEd3lD8hZ7lwSCRCtYqa0'
 
 # Application can run in command line mode or GUI mode
 

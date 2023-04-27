@@ -23,7 +23,7 @@ class IntruderDetector(BaseCameraDetector):
 		self.ori_frame = None
 		self.benchmark_frame = None
 
-		self.bg_sub = cv2.createBackgroundSubtractorMOG2(history=700, varThreshold=30, detectShadows=False)
+		self.bg_sub = cv2.createBackgroundSubtractorMOG2(history=400, varThreshold=40, detectShadows=True)
 		self.result = {'intruder_type': self.INTRUDER_EVENT1, 'path': ''}
 		self.status = self.INTRUDER_EVENT1
 
@@ -102,8 +102,8 @@ class IntruderDetector(BaseCameraDetector):
 		if not self.frame_counter % (self.fps + 1):
 			self.prev_roi_area = roi_area
 
-		cv2.putText(frame, 'Event {}'.format(self.status), (10, 100), cv2.FONT_HERSHEY_PLAIN, 3,
-		            (0, 0, 255), thickness=2)
+		# cv2.putText(frame, 'Event {}'.format(self.status), (10, 100), cv2.FONT_HERSHEY_PLAIN, 3,
+		#             (0, 0, 255), thickness=2)
 
 		self.frame = frame
 		return frame

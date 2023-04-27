@@ -41,10 +41,10 @@ class WSSModel:
 	def set_intruder_status(self, status: int):
 		if status not in range(1, 5):
 			raise ValueError('Intruder status should be in 1 to 4.')
-
-		self.intruder_status = status
-		self.raise_callback('intruder_status', status)
-		print('Intruder status change to {}'.format(status))
+		if status != self.intruder_status:
+			print('Intruder status change to {}'.format(status))
+			self.intruder_status = status
+			self.raise_callback('intruder_status', status)
 
 	def set_intruder_detect_log(self, log_data):
 		self.intruder_detect_logs.append(log_data)

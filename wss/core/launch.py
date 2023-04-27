@@ -23,7 +23,6 @@ from wss.core.model import wss_model
 from wss.gui import WSSMainWindow
 from wss.profiler import AsyncProfiler
 from wss.net import AsyncWebsocketClient
-from wss.detector import IntruderDetector
 from wss.accessories.cameras import get_camera_manager
 
 
@@ -41,9 +40,6 @@ class LaunchManager:
 		self.net_client = AsyncWebsocketClient(settings.WSS_CONNECTION_URL.format(api_key=settings.WSS_SECRET_KEY))
 		self.net_client.register_message_callback(self.on_receive_message)
 		self.net_client.connect()
-
-	def init_callback(self):
-		wss_model.register_callback('intruder_detect_logs', self.on_detect_event_change)
 
 	def init_profiler(self):
 		self.profiler = AsyncProfiler()
@@ -64,6 +60,7 @@ class LaunchManager:
 
 	def launch_camera_detector(self):
 		self.camera_manager.set_detector()
+		wss_model.register_callback('intruder_detect_logs', self.on_detect_event_change)
 
 	def launch_gui(self):
 		self.gui_app = QApplication(sys.argv)
@@ -72,8 +69,6 @@ class LaunchManager:
 		sys.exit(self.gui_app.exec_())
 
 	def on_profiler_update(self, data):
-		print(data)
-		return
 		self.net_client.send(data, 'profiler')
 
 	def enable_detection(self, operation, feedback=True):
@@ -134,8 +129,6 @@ class LaunchManager:
 		self.net_client.send({'operation_type': 'restart', 'operation': ''}, message_type='operation_feedback')
 
 	def on_detect_event_change(self, data):
-		print('detect event', data)
-		return
 		path = data.get('path', '')
 		intruder_type = data.get('intruder_type', 0)
 
@@ -146,6 +139,7 @@ class LaunchManager:
 				image_data = base64.b64encode(f.read()).decode("utf-8")
 				message['data_file'] = image_data
 			self.net_client.send(message=message, message_type='detect_event')
+			print("send event log")
 
 
 if __name__ == '__main__':

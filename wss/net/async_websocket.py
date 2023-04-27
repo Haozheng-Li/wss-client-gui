@@ -105,7 +105,7 @@ class AsyncWebsocketClient:
 
     def send(self, message, message_type):
         if not self.connected:
-            raise ConnectionException('AsyncWebsocketClient - connection is closed')
+            print('AsyncWebsocketClient - connection is closed')
 
         data = {'message': message,
                 'message_type': message_type}
