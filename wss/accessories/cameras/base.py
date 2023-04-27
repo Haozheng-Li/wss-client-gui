@@ -137,4 +137,5 @@ class CameraBase:
 
 	def enable_detector(self, detector):
 		self.detectors.append(detector)
+		self.set_detector_video_properties()
 

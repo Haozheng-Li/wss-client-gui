@@ -232,7 +232,7 @@ class CameraFigureView(QWidget):
 
         self.timer = QTimer()
         self.timer.timeout.connect(self._update_camera_frame)
-        # self.timer.start(30)
+        self.timer.start(50)
         self.camera_manager = None
 
     def setup_title(self):
@@ -244,9 +244,6 @@ class CameraFigureView(QWidget):
 
         self.title_div = HorizontalDiv(theme.DARK_FOUR)
         self.content_layout.addWidget(self.title_div)
-
-    def start_show_camera(self):
-        pass
 
     def setup_ui(self):
         self.setObjectName('camera_figure')
