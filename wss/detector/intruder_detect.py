@@ -70,14 +70,14 @@ class IntruderDetector(BaseCameraDetector):
 		if not contours:
 			return frame
 
-		self.human_detect(frame)
+		human_result, human_frame = self.human_detect(frame)
 
 		max_contour = max(contours, key=cv2.contourArea)
 
 		if cv2.contourArea(max_contour) < 1200 or (cv2.contourArea(max_contour) / self.get_frame_area(frame)) > 0.6:
 			self.not_detect_counter += 1
-			if self.not_detect_counter > self.fps * 5:
-				self.set_event(self.INTRUDER_EVENT1, frame)
+			if self.not_detect_counter > self.fps * 3:
+				self.set_event(self.INTRUDER_EVENT1, frame, human_result)
 			return frame
 
 		x, y, w, h = cv2.boundingRect(max_contour)
@@ -86,7 +86,7 @@ class IntruderDetector(BaseCameraDetector):
 		cv2.circle(frame, mid_point, 3, (255, 0, 255), 6)
 
 		if self.status == self.INTRUDER_EVENT1:
-			self.set_event(self.INTRUDER_EVENT2, frame)
+			self.set_event(self.INTRUDER_EVENT2, frame, human_result)
 
 		roi_area = w * h
 		if self.prev_roi_area and not self.frame_counter % self.fps:  # Detect per second
@@ -94,10 +94,10 @@ class IntruderDetector(BaseCameraDetector):
 				self.detect_counter += 1
 
 		if self.detect_counter > 2 and self.status == self.INTRUDER_EVENT2:  # At lease last for 2 seconds
-			self.set_event(self.INTRUDER_EVENT3, frame)
+			self.set_event(self.INTRUDER_EVENT3, frame, human_result)
 
 		if self.detect_counter > 4:  # At lease last for 5 seconds
-			self.set_event(self.INTRUDER_EVENT4, frame)
+			self.set_event(self.INTRUDER_EVENT4, frame, human_result)
 
 		if not self.frame_counter % (self.fps + 1):
 			self.prev_roi_area = roi_area
@@ -108,7 +108,7 @@ class IntruderDetector(BaseCameraDetector):
 		self.frame = frame
 		return frame
 
-	def set_event(self, event_type, frame):
+	def set_event(self, event_type, frame, human_result):
 		if event_type == self.INTRUDER_EVENT1:
 			if self.status == self.INTRUDER_EVENT4:
 				self.result = {'intruder_type': self.INTRUDER_EVENT4, 'path': self.video_output_path, 'time': datetime.datetime.now()}
@@ -118,24 +118,29 @@ class IntruderDetector(BaseCameraDetector):
 				self.detect_counter = 0
 				self.not_detect_counter = 0
 				self.video_output_path = ''
+			self.status = event_type
+			wss_model.set_intruder_status(self.status)
 
-		self.status = event_type
-		wss_model.set_intruder_status(self.status)
-
-		if event_type == self.INTRUDER_EVENT2:
+		if event_type == self.INTRUDER_EVENT2 and human_result:
+			self.status = event_type
+			wss_model.set_intruder_status(self.status)
 			output_path = '{}/event2_{}.jpg'.format(self.save_path, datetime.datetime.now().strftime("%I-%M-%S"))
 			cv2.imwrite(output_path, frame)
 			self.result = {'intruder_type': event_type, 'path': output_path, 'time': datetime.datetime.now()}
 			print("Trigger event2")
 			self.on_result_change()
 
-		elif event_type == self.INTRUDER_EVENT3:
+		elif event_type == self.INTRUDER_EVENT3 and human_result:
+			self.status = event_type
+			wss_model.set_intruder_status(self.status)
 			output_path = '{}/event3_{}.jpg'.format(self.save_path, datetime.datetime.now().strftime("%I-%M-%S"))
 			cv2.imwrite(output_path, frame)
 			self.result = {'intruder_type': event_type, 'path': output_path, 'time': datetime.datetime.now()}
 			self.on_result_change()
 
-		elif event_type == self.INTRUDER_EVENT4:
+		elif event_type == self.INTRUDER_EVENT4 and human_result:
+			self.status = event_type
+			wss_model.set_intruder_status(self.status)
 			if not self.video_output_path:
 				self.video_output_path = '{}/event4_{}.avi'.format(self.save_path, datetime.datetime.now().strftime("%I-%M-%S"))
 			if not self.video_output_writer:
@@ -152,8 +157,13 @@ class IntruderDetector(BaseCameraDetector):
 		# Draw rectangles around detected faces
 		for (x, y, w, h) in faces:
 			cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
+		
+		if len(faces):
+			results = True
+		else:
+			results = False
 
-		return frame
+		return results, frame
 
 	def on_result_change(self):
 		wss_model.set_intruder_detect_log(self.result)

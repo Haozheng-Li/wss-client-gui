@@ -197,6 +197,6 @@ class CameraManager:
 
 	def set_detector(self, ) -> None:
 		for camera in self._cameras:
-			detector = IntruderDetector(save_path=str(settings.BASE_DIR / 'output'))
+			detector = IntruderDetector(save_path='output')
 			camera.enable_detector(detector)
 			print("Camera Manager - Set detector: {}".format(detector))
