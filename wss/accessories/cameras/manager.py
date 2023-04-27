@@ -46,9 +46,11 @@ class CameraManager:
 		# detector
 		self.detector = None
 
-	@staticmethod
-	def detect_cameras(max_cameras=4):
-		available_cameras = 0
+		self.cameras_num = 0
+
+	def detect_cameras(self, max_cameras=4):
+		if self.cameras_num:
+			return self.cameras_num
 
 		for camera_index in range(max_cameras):
 			cap = cv2.VideoCapture(camera_index, cv2.CAP_ANY)
@@ -57,10 +59,10 @@ class CameraManager:
 				cap.release()
 				break
 			else:
-				available_cameras += 1
+				self.cameras_num += 1
 				cap.release()
 
-		return available_cameras
+		return self.cameras_num
 		
 	def _camera_init(self, camera_id) -> object:
 		camera = CameraBase(camera_id)
