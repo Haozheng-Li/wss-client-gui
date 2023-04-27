@@ -210,7 +210,7 @@ class CameraPreviewOptionsView(QWidget):
 
         self.layout.addWidget(self.options_container)
 
-        camera_num = get_camera_manager().detect_cameras()
+        avaliable_cameras_id = get_camera_manager().get_available_cameras_id()
 
         option_merge_box = CameraPreviewOptionsBox(text='Merge View',
                                              icon=str(settings.BASE_DIR / 'static/image/icon/camera.png'),
@@ -218,7 +218,7 @@ class CameraPreviewOptionsView(QWidget):
         option_merge_box.set_active()
         self.add_options(option_merge_box)
 
-        for index in range(camera_num):
+        for index in avaliable_cameras_id:
             option_box = CameraPreviewOptionsBox(text='USB Camera{}'.format(index),
                                             icon=str(settings.BASE_DIR / 'static/image/usb-camera.png'),
                                                  option_id=index)
@@ -380,7 +380,7 @@ class CameraFigureView(QWidget):
     def _update_camera_frame(self):
         if not self.camera_manager:
             self.camera_manager = get_camera_manager()
-        if not self.camera_manager.detect_cameras() or not self.camera_manager.get_camera_start_status():
+        if not self.camera_manager.get_available_cameras_id() or not self.camera_manager.get_camera_start_status():
             return
 
         if self.preview_option_id == 99:

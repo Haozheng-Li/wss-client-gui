@@ -59,7 +59,7 @@ class LaunchManager:
 
 	def launch_camera(self):
 		self.camera_manager = get_camera_manager()
-		self.camera_manager.initialize_cameras(self.camera_manager.detect_cameras())
+		self.camera_manager.initialize_cameras(self.camera_manager.get_available_cameras_id())
 		self.camera_manager.start_all()
 
 	def launch_camera_detector(self):

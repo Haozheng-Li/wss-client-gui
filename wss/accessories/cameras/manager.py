@@ -47,27 +47,27 @@ class CameraManager:
 		self._show_status = False
 		self._show_thread = None
 
-		self.cameras_num = None
+		self.available_cameras_id = None
 
 		self.camera_started = False
 
-	def detect_cameras(self, max_cameras=4):
-		if self.cameras_num is not None:
-			return self.cameras_num
+	def get_available_cameras_id(self, max_cameras=4):
+		if self.available_cameras_id is not None:
+			return self.available_cameras_id
 
-		self.cameras_num = 0
+		self.available_cameras_id = []
 
-		for camera_index in range(max_cameras):
-			cap = cv2.VideoCapture(camera_index, cv2.CAP_ANY)
+		for camera_id in range(max_cameras):
+			cap = cv2.VideoCapture(camera_id, cv2.CAP_ANY)
 
 			if cap is None or not cap.isOpened():
 				cap.release()
 				break
 			else:
-				self.cameras_num += 1
+				self.available_cameras_id.append(camera_id)
 				cap.release()
-
-		return self.cameras_num
+		self.available_cameras_id = [0, 2]
+		return self.available_cameras_id
 		
 	def _camera_init(self, camera_id) -> object:
 		camera = CameraBase(camera_id)
@@ -75,8 +75,8 @@ class CameraManager:
 		print("Camera manager - Init cameras: id {}".format(camera_id))
 		return camera
 
-	def initialize_cameras(self, number) -> None:
-		for camera_id in range(number):
+	def initialize_cameras(self, cameras_id) -> None:
+		for camera_id in cameras_id:
 			self._camera_init(camera_id)
 
 	def get_camera_start_status(self):
