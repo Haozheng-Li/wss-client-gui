@@ -2,6 +2,7 @@ import os
 import cv2
 import datetime
 
+from wss.core import settings
 from wss.detector.base import BaseCameraDetector
 from wss.core.model import wss_model
 
@@ -38,7 +39,7 @@ class IntruderDetector(BaseCameraDetector):
 
 		self.check_path_validity()
 
-		self.face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+		self.face_cascade = cv2.CascadeClassifier(str(settings.BASE_DIR / 'cv_models/haarcascade_frontalface_default.xml'))
 
 	def check_path_validity(self):
 		if not os.path.exists(self.save_path):
