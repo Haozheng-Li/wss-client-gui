@@ -32,8 +32,8 @@ class CameraBase:
 
 	def open(self, source=0):
 		self.video_capture = cv2.VideoCapture(source)
-		self.video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-		self.video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+		self.video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
+		self.video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
 
 		self.set_detector_video_properties()
 
