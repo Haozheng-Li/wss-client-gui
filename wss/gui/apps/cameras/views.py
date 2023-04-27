@@ -111,10 +111,11 @@ class AvailableCamerasView(QWidget):
         self.title = None
         self.layout = None
         self.parent = None
+        self.boxes = []
 
     def setup_title(self):
         self.title = QLabel()
-        self.title.setText('Available Cameras')
+        self.title.setText('Preview options')
         self.title.setStyleSheet(f"font: 12pt '{settings.APP_FONT['family']}'")
         self.title.setMaximumHeight(20)
         self.layout.addWidget(self.title)
@@ -140,19 +141,34 @@ class AvailableCamerasView(QWidget):
 
         camera_num = get_camera_manager().detect_cameras()
 
-        for camera in range(camera_num):
-            camera_box = AvailableCameraBox()
+        camera_box = AvailableCameraBox(text='Merge View', icon=str(settings.BASE_DIR / 'static/image/icon/camera.png'))
+        camera_box.set_active()
+        self.add_available_camera(camera_box)
+
+        for index in range(camera_num):
+            camera_box = AvailableCameraBox(text='USB Camera{}'.format(index),
+                                            icon=str(settings.BASE_DIR / 'static/image/usb-camera.png'))
             self.add_available_camera(camera_box)
+
+        self.available_cameras_container.setCurrentRow(0)
+        self.available_cameras_container.currentItemChanged.connect(self.on_item_changed)
+
+    def on_item_changed(self, current, previous):
+        selected_widget = self.available_cameras_container.itemWidget(current)
+        pre_selected_widget = self.available_cameras_container.itemWidget(previous)
+        selected_widget.set_active()
+        pre_selected_widget.set_inactive()
 
     def add_available_camera(self, widget):
         item = QListWidgetItem()
         item.setSizeHint(QSize(120, 100))
+        self.boxes.append(item)
         self.available_cameras_container.addItem(item)
         self.available_cameras_container.setItemWidget(item, widget)
 
 
 class AvailableCameraBox(QWidget):
-    def __init__(self):
+    def __init__(self, text, icon):
         super(AvailableCameraBox, self).__init__()
         self.checkBox = None
         self.label = None
@@ -162,11 +178,26 @@ class AvailableCameraBox(QWidget):
         self.wrapper_layout = None
         self.camera_figure = None
         self.container_layout = None
-        self.setStyleSheet("background:#fff;")
+
+        self.text = text
+        self.icon = icon
         self.setup_ui()
 
-    def set_data(self, data):
-        pass
+    def set_active(self):
+        self.container.setStyleSheet(f"""
+        #container {{
+        border-radius: 8px;
+        border: 3px solid #568AF2;
+        }}
+        """)
+
+    def set_inactive(self):
+        self.container.setStyleSheet(f"""
+        #container {{
+        border-radius: 8px;
+        border: 3px solid #C3CCDF;
+        }}
+        """)
 
     def setup_ui(self):
         self.setStyleSheet(f"""
@@ -180,7 +211,7 @@ class AvailableCameraBox(QWidget):
         self.container.setStyleSheet(f"""
         #container {{
         border-radius: 8px;
-        border: 3px solid #568af2;
+        border: 3px solid #C3CCDF;
         }}
         """)
         self.container_layout = QHBoxLayout(self.container)
@@ -194,7 +225,7 @@ class AvailableCameraBox(QWidget):
         self.camera_figure.setMinimumSize(camera_figure_size, camera_figure_size)
         self.camera_figure.setObjectName(u"pic")
         self.camera_figure.setScaledContents(True)
-        self.camera_figure.setPixmap(QPixmap(str(settings.BASE_DIR / 'static/image/usb-camera.png')))
+        self.camera_figure.setPixmap(QPixmap(self.icon))
 
         self.container_layout.addWidget(self.camera_figure)
 
@@ -203,16 +234,12 @@ class AvailableCameraBox(QWidget):
         self.verticalLayout = QVBoxLayout(self.frame)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.label = QLabel(self.frame)
-        self.label.setText("USB Camera 1")
+        self.label.setText(self.text)
 
         self.label.setObjectName(u"label")
 
         self.verticalLayout.addWidget(self.label)
 
-        self.checkBox = QCheckBox(self.frame)
-        self.checkBox.setObjectName(u"checkBox")
-
-        self.verticalLayout.addWidget(self.checkBox)
         self.container_layout.addWidget(self.frame)
         self.wrapper_layout.addWidget(self.container)
 
