@@ -21,7 +21,7 @@ from wss.gui.widget.title_bar.title_bar_button import PyTitleButton
 from wss.gui.widget.div import VerticalDiv
 
 from PySide2.QtCore import QSize, Signal, Qt
-from PySide2.QtGui import QCursor
+from PySide2.QtGui import QCursor, QPixmap
 from PySide2.QtWidgets import QWidget, QVBoxLayout, QFrame, QHBoxLayout, QLabel
 
 _is_maximized = False
@@ -89,12 +89,6 @@ class PyTitleBar(QWidget):
 		# ADD BG COLOR
 		self.bg.setStyleSheet(f"background-color: {bg_color}; border-radius: {radius}px;")
 
-		# SET LOGO AND WIDTH
-		self.top_logo.setMinimumWidth(logo_width)
-		self.top_logo.setMaximumWidth(logo_width)
-
-		# self.top_logo.setPixmap(set_resource.set_svg_image(logo_image))
-
 		# MOVE WINDOW / MAXIMIZE / RESTORE
 		# ///////////////////////////////////////////////////////////////
 		def moveWindow(event):
@@ -113,7 +107,6 @@ class PyTitleBar(QWidget):
 
 		# MOVE APP WIDGETS
 		if is_custom_title_bar:
-			self.top_logo.mouseMoveEvent = moveWindow
 			self.div_1.mouseMoveEvent = moveWindow
 			self.title_label.mouseMoveEvent = moveWindow
 			self.div_2.mouseMoveEvent = moveWindow
@@ -121,15 +114,12 @@ class PyTitleBar(QWidget):
 
 		# MAXIMIZE / RESTORE
 		if is_custom_title_bar:
-			self.top_logo.mouseDoubleClickEvent = self.maximize_restore
 			self.div_1.mouseDoubleClickEvent = self.maximize_restore
 			self.title_label.mouseDoubleClickEvent = self.maximize_restore
 			self.div_2.mouseDoubleClickEvent = self.maximize_restore
 
 		# ADD WIDGETS TO TITLE BAR
 		# ///////////////////////////////////////////////////////////////
-		self.bg_layout.addWidget(self.top_logo)
-		self.bg_layout.addWidget(self.div_1)
 		self.bg_layout.addWidget(self.title_label)
 		self.bg_layout.addWidget(self.div_2)
 
@@ -254,13 +244,6 @@ class PyTitleBar(QWidget):
 		self.div_2 = VerticalDiv(self._div_color)
 		self.div_3 = VerticalDiv(self._div_color)
 
-		# LEFT FRAME WITH MOVE APP
-		self.top_logo = QLabel()
-		self.top_logo_layout = QVBoxLayout(self.top_logo)
-		self.top_logo_layout.setContentsMargins(0, 0, 0, 0)
-		# self.logo_svg = QSvgWidget()
-		# self.logo_svg.load(set_resource.set_svg_image(self._logo_image))
-		# self.top_logo_layout.addWidget(self.logo_svg, Qt.AlignCenter, Qt.AlignCenter)
 
 		# TITLE LABEL
 		self.title_label = QLabel()
