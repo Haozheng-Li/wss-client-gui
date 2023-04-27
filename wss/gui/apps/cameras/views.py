@@ -50,7 +50,7 @@ class CamerasView(QWidget):
         self.content_layout = QHBoxLayout(self)
         self.content_layout.setSpacing(15)
         self.content_layout.setObjectName(u"content_layout")
-        self.content_layout.setContentsMargins(0, 5, 5, 5)
+        self.content_layout.setContentsMargins(5, 5, 5, 5)
         self.setup_left_page()
         self.setup_right_page()
 
@@ -128,7 +128,7 @@ class AvailableCamerasView(QWidget):
         self.layout = QVBoxLayout(self)
         self.layout.setSpacing(15)
         self.layout.setObjectName(u"layout")
-        self.layout.setContentsMargins(12, 12, 12, 12)
+        self.layout.setContentsMargins(5, 5, 5, 5)
 
         self.setup_title()
 
@@ -146,7 +146,7 @@ class AvailableCamerasView(QWidget):
 
     def add_available_camera(self, widget):
         item = QListWidgetItem()
-        item.setSizeHint(QSize(100, 100))
+        item.setSizeHint(QSize(120, 100))
         self.available_cameras_container.addItem(item)
         self.available_cameras_container.setItemWidget(item, widget)
 
@@ -185,12 +185,13 @@ class AvailableCameraBox(QWidget):
         """)
         self.container_layout = QHBoxLayout(self.container)
         self.container_layout.setObjectName(u"horizontalLayout")
-        self.container_layout.setContentsMargins(10, 0, 0, 0)
+        self.container_layout.setContentsMargins(5, 0, 0, 0)
         self.container_layout.setSpacing(0)
 
         self.camera_figure = QLabel(self)
-        self.camera_figure.setMaximumSize(64, 64)
-        self.camera_figure.setMinimumSize(64, 64)
+        camera_figure_size = 48
+        self.camera_figure.setMaximumSize(camera_figure_size, camera_figure_size)
+        self.camera_figure.setMinimumSize(camera_figure_size, camera_figure_size)
         self.camera_figure.setObjectName(u"pic")
         self.camera_figure.setScaledContents(True)
         self.camera_figure.setPixmap(QPixmap(str(settings.BASE_DIR / 'static/image/usb-camera.png')))
@@ -272,6 +273,7 @@ class CameraFigureView(QWidget):
             self.camera_manager = get_camera_manager()
         if not self.camera_manager.detect_cameras():
             return
+        return
         frame = cv2.cvtColor(self.camera_manager.get_merge_frame(show_time=True, show_fps=True), cv2.COLOR_BGR2RGB)
         qimage = QImage(frame.data, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
         self.camera_frame_preview.setPixmap(QPixmap.fromImage(qimage))

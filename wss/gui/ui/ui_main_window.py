@@ -90,7 +90,7 @@ class UIMainWindow(object):
         self.layout_wrapper.setObjectName("layout_wrapper")
 
         self.layout_wrapper_layout = QHBoxLayout(self.layout_wrapper)
-        self.layout_wrapper_layout.setContentsMargins(0, 0, 0, 0)
+        self.layout_wrapper_layout.setContentsMargins(15, 15, 15, 15)
         self.layout_wrapper_layout.setSpacing(2)
 
         layout_wrapper_style = f"""

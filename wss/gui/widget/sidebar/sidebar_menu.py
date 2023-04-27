@@ -52,17 +52,18 @@ class SidebarMenu(QWidget):
 
         self.bg_layout = QVBoxLayout(self.bg)
         self.bg_layout.setContentsMargins(0, 0, 0, 0)
+        self.bg_layout.setSpacing(50)
         
         self.setup_logo()
 
         self.sidebar_top_menu = QFrame()
         self.sidebar_top_layout = QVBoxLayout(self.sidebar_top_menu)
-        self.sidebar_top_layout.setContentsMargins(0, 30, 0, 20)
-        self.sidebar_top_layout.setSpacing(25)
+        self.sidebar_top_layout.setContentsMargins(0, 0, 0, 0)
+        self.sidebar_top_layout.setSpacing(40)
 
         self.sidebar_bottom_menu = QFrame()
         self.sidebar_bottom_layout = QVBoxLayout(self.sidebar_bottom_menu)
-        self.sidebar_bottom_layout.setContentsMargins(0, 0, 0, 0)
+        self.sidebar_bottom_layout.setContentsMargins(0, 20, 0, 20)
 
         self.bg_layout.addWidget(self.sidebar_top_menu, 0, Qt.AlignTop)
         self.bg_layout.addWidget(self.sidebar_bottom_menu, 0, Qt.AlignBottom)
@@ -70,27 +71,35 @@ class SidebarMenu(QWidget):
         self.main_layout.addWidget(self.bg)
 
         self.add_menu()
+
+        self.setup_setting_button()
     
     def setup_logo(self):
         self.icon_frame = QFrame()
-        self.icon_frame.setMaximumHeight(90)
-        self.icon_frame_layout = QHBoxLayout(self.icon_frame)
-        self.icon_frame_layout.setContentsMargins(0, 3, 0, 3)
-        self.icon_frame_layout.setSpacing(10)
+        self.icon_frame.setMaximumHeight(120)
+        self.icon_frame_layout = QVBoxLayout(self.icon_frame)
+        self.icon_frame_layout.setContentsMargins(0, 20, 0, 20)
+        self.icon_frame_layout.setSpacing(20)
         self.bg_layout.addWidget(self.icon_frame)
 
         self.icon = QLabel()
         self.icon.setPixmap(QPixmap(str(settings.BASE_DIR / 'static/image/logo/logo-sm.png')))
         self.icon.setScaledContents(True)
-        self.icon.setMaximumSize(60, 60)
-        self.icon.setMinimumSize(60, 60)
-        self.icon_frame_layout.addWidget(self.icon, 0, Qt.AlignVCenter)
+        self.icon.setFixedSize(48, 48)
+        self.icon_frame_layout.addWidget(self.icon, 0, Qt.AlignHCenter)
+
+        self.icon_div = HorizontalDiv()
+        self.icon_frame_layout.addWidget(self.icon_div, 0, Qt.AlignVCenter)
 
     def add_menu(self):
-        button = SidebarButton(size=100)
-        button2 = SidebarButton(size=100)
-        button.set_data({'text': 'Cameras', 'icon_path': str(settings.BASE_DIR / 'static/image/icon/camera.png')})
-        button2.set_data({'text': 'Logs', 'icon_path': str(settings.BASE_DIR / 'static/image/icon/camera.png')})
+        button = SidebarButton(text='Cameras',
+                               icon_path=str(settings.BASE_DIR / 'static/image/icon/camera.png'),
+                               icon_active_path=str(settings.BASE_DIR / 'static/image/icon/camera-active.png'),
+                               size=100)
+        button2 = SidebarButton(text='Logs',
+                                icon_path=str(settings.BASE_DIR / 'static/image/icon/logs.png'),
+                                icon_active_path=str(settings.BASE_DIR / 'static/image/icon/logs-active.png'),
+                                size=100)
         self.buttons.append(button)
         self.buttons.append(button2)
         button.set_active()
@@ -98,6 +107,13 @@ class SidebarMenu(QWidget):
         button2.clicked.connect(self.sidebar_button_clicked)
         self.sidebar_top_layout.addWidget(button)
         self.sidebar_top_layout.addWidget(button2)
+
+    def setup_setting_button(self):
+        button = SidebarButton(text='',
+                               icon_path=str(settings.BASE_DIR / 'static/image/icon/settings.png'),
+                               icon_active_path=str(settings.BASE_DIR / 'static/image/icon/settings-active.png'),
+                               size=60, border_radius=20, can_be_selected=False)
+        self.sidebar_bottom_layout.addWidget(button)
 
     def sidebar_button_clicked(self, clicked_button):
         for button in self.buttons:
