@@ -49,11 +49,19 @@ class IntruderDetector(BaseCameraDetector):
 		self.detector_status = status
 
 	def check_path_validity(self):
+		"""
+		Check output path validity
+		:return:
+		"""
 		if not os.path.exists(self.save_path):
 			print("Detector save path do not exist, create directory now.")
 			os.mkdir(self.save_path)
 
 	def detect(self, frame):
+		"""
+		:param frame:
+		:return:
+		"""
 		if not self.detector_status:
 			return frame
 
@@ -109,6 +117,13 @@ class IntruderDetector(BaseCameraDetector):
 		return frame
 
 	def set_event(self, event_type, frame, human_result):
+		"""
+		Set motion detect event
+		:param event_type: event id
+		:param frame: camera frame data
+		:param human_result: human result data
+		:return:
+		"""
 		if event_type == self.INTRUDER_EVENT1:
 			if self.status == self.INTRUDER_EVENT4:
 				self.result = {'intruder_type': self.INTRUDER_EVENT4, 'path': self.video_output_path, 'time': datetime.datetime.now()}
@@ -149,6 +164,11 @@ class IntruderDetector(BaseCameraDetector):
 			self.video_output_writer.write(frame)
 
 	def human_detect(self, frame):
+		"""
+		detect human
+		:param frame:
+		:return:
+		"""
 		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
 		# Detect faces in the image

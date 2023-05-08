@@ -15,6 +15,9 @@
 
 
 class WSSModel:
+	"""
+	Model instance for restore key data. And use callback mode to inform each method that cares about the data change
+	"""
 
 	NO_INTRUDER = 1
 	INTRUDER_PASSING_BY = 2

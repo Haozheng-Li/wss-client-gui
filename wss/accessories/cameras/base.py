@@ -31,6 +31,11 @@ class CameraBase:
 		return self.camera_id
 
 	def open(self, source=0):
+		"""
+		Open camera in cv2
+		:param source:
+		:return:
+		"""
 		self.video_capture = cv2.VideoCapture(source)
 		self.video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
 		self.video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
@@ -47,14 +52,21 @@ class CameraBase:
 			raise RuntimeError("Unable to open csi_camera or video source")
 
 	def start(self, source=0, width=640, height=480, codec='MJPG', fps=30):
+		"""
+		Initialize camera and initialize camera running thread
+		:param source:
+		:param width:
+		:param height:
+		:param codec:
+		:param fps:
+		:return:
+		"""
 		self.open(source)
 		if self.keep_running:
 			print('Video capturing is already running')
 			return
 
 		if self.video_capture:
-			# TODO set properties bugs unfix
-			# self.set_properties(width, height, codec, fps)
 			self.keep_running = True
 			self._thread = threading.Thread(target=self.update)
 			self._thread.daemon = True
@@ -98,6 +110,10 @@ class CameraBase:
 		return self.video_capture
 
 	def update(self):
+		"""
+		Update camera frame data on its own thread
+		:return:
+		"""
 		while self.keep_running:
 			try:
 				grabbed, frame = self.video_capture.read()
@@ -118,6 +134,12 @@ class CameraBase:
 				print("cameras error: {}".format(ee))
 
 	def read(self, show_time=False, show_fps=False):
+		"""
+		Read camera frame data
+		:param show_time: show time on camera frame
+		:param show_fps: show fps on camera frame
+		:return:
+		"""
 		frame = []
 		if self.grabbed:
 			with self._thread_lock:
@@ -133,12 +155,21 @@ class CameraBase:
 		return self.grabbed, frame
 
 	def release(self):
+		"""
+		Release camera instance
+		:return:
+		"""
 		self.stop()
 		if self.video_capture:
 			self.video_capture.release()
 			self.video_capture = None
 
 	def enable_detector(self, detector):
+		"""
+		Set detector for camera instance
+		:param detector: detector instance
+		:return:
+		"""
 		self.detectors.append(detector)
 		self.set_detector_video_properties()
 
